@@ -28,7 +28,7 @@ export const useCodeStore = defineStore('CodeSrore', {
       id: 0,
       code: '',
       messages: [] as IMessage[],
-      env: isElectron ? getItem('env') || 'browser' : 'browser',
+      env: isElectron ? getItem('env') || 'node' : 'browser',
       historys: [],
       mode: getItem('mode') || 'manual'
     } as ICodeStoreState),
