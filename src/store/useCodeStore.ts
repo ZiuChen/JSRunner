@@ -57,9 +57,11 @@ export const useCodeStore = defineStore('CodeSrore', {
       this.code = code
     },
 
-    setCode(code: string) {
+    handleCodeChange(code: string) {
       this.code = code
       setItem(this.codeWithId, this.code)
+
+      if (this.mode === 'ontime') this.execCode()
     },
 
     pushMessage(message: IMessage) {
@@ -124,9 +126,7 @@ export const useCodeStore = defineStore('CodeSrore', {
         const id = uniqueId()
         const timeStamp = new Date().getTime()
 
-        console.log(stdout, stderr)
-
-        if (stdout)
+        if (stdout && stdout?.length)
           this.pushMessage({
             id,
             timeStamp,

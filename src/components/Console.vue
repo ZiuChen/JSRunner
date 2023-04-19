@@ -76,6 +76,7 @@ function handleCopyClick(text: string | number) {
 @import '@/style/scrollbar.less';
 .console {
   padding-bottom: 5px;
+  user-select: none;
 }
 .empty-tip {
   text-align: center;
@@ -87,7 +88,6 @@ function handleCopyClick(text: string | number) {
   max-height: 200px;
   overflow: auto;
   padding: 5px;
-  user-select: none;
   .scrollbar();
 
   .time-status {

@@ -37,7 +37,11 @@
     </div>
     <a-split v-model:size="size" :min="0.1" :max="0.8">
       <template #first>
-        <Editor :code="store.code" @code-change="store.setCode" @run-code="store.execCode" />
+        <Editor
+          :code="store.code"
+          @code-change="store.handleCodeChange"
+          @run-code="store.execCode"
+        />
       </template>
       <template #second>
         <Console :messages="store.messages" />
