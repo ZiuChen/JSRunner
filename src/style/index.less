@@ -1,0 +1,40 @@
+@import '@/style/transition.less';
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  overflow: hidden;
+}
+
+.back {
+  position: fixed !important;
+  top: 10px;
+  left: 10px;
+}
+
+body {
+  --primary-color: #3271ae;
+  --primary-color-lighter: #4997e1;
+  --text-color: #333;
+  --text-color-lighter: #d0d2d6;
+  --text-bg-color: #e8e8e8;
+  --text-bg-color-lighter: #f3f3f3;
+  --nav-bg-color: linear-gradient(307deg, #ece9e6, #ffffff, #ece9e6);
+  --nav-item-bg-color: #ebeaea;
+  --bg-color: #fff;
+}
+
+body.dark {
+  --primary-color: #448bd2;
+  --primary-color-lighter: #4997e1;
+  --text-color: #ffffff;
+  --text-color-lighter: #efefef;
+  --text-bg-color: #353535;
+  --text-bg-color-lighter: #252525;
+  --nav-bg-color: linear-gradient(130deg, #000000, #434343, #000000);
+  --nav-item-bg-color: #2e2e2e;
+  --bg-color: #1b1b1b;
+}
