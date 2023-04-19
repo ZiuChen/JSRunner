@@ -1,4 +1,5 @@
 import { Buffer, require } from '@/preload'
+import { cloneDeep, concat } from 'lodash-es'
 
 export function runCodeInSandbox(
   code: string,
@@ -9,7 +10,7 @@ export function runCodeInSandbox(
     new Compartment({
       console: consoleWithCallback(callback),
       fetch: fetch.bind(window),
-      utools,
+      utools: getuToolsLite(),
       Buffer,
       require
     }).evaluate(code)
@@ -37,4 +38,22 @@ export function consoleWithCallback(callback: any) {
     warn: (...args: any[]) => callback && callback(null, null, args),
     info: (...args: any[]) => callback && callback(null, null, null, args)
   }
+}
+
+export function getuToolsLite() {
+  const utoolsLite = Object.assign({}, cloneDeep(utools))
+  const dbBlackList = ['db', 'dbStorage', 'removeFeature', 'setFeature', 'onDbPull']
+  const payBlackList = [
+    'fetchUserServerTemporaryToken',
+    'getUserServerTemporaryToken',
+    'openPayment',
+    'fetchUserPayments'
+  ]
+  const etcBlackList = ['onPluginEnter', 'onPluginOut', 'createBrowserWindow']
+  concat(dbBlackList, payBlackList, etcBlackList).forEach((item) => {
+    // @ts-ignore
+    delete utoolsLite[item]
+  })
+  Object.freeze(utoolsLite)
+  return utoolsLite
 }

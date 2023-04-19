@@ -132,4 +132,20 @@ self.MonacoEnvironment = {
   }
 }
 
+// 导入uTools声明文件
+import apis from './types/utools.api.d.ts?raw'
+
+monaco.languages.typescript.javascriptDefaults.addExtraLib(apis, 'utools.api.d.ts')
+
+monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
+  noSemanticValidation: true,
+  noSyntaxValidation: false
+})
+
+monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
+  target: monaco.languages.typescript.ScriptTarget.ES2016,
+  allowNonTsExtensions: true,
+  allowJs: true,
+})
+
 export { monaco }
