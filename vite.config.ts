@@ -7,19 +7,24 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ArcoResolver } from 'unplugin-vue-components/resolvers'
 import { createStyleImportPlugin } from 'vite-plugin-style-import'
-import monacoEditorPlugin from 'vite-plugin-monaco-editor'
 import postBuildPlugin from './build/postBuildPlugin'
 
 export default defineConfig({
+  base: './',
   resolve: {
     alias: {
       '@': '/src'
     },
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.vue']
   },
-  // external
   build: {
     rollupOptions: {
+      output: {
+        manualChunks: (e) => {
+          if (e.includes('/node_modules/monaco-editor/')) return 'monaco'
+          return 'vendor'
+        }
+      },
       external: ['electron', 'utools', 'process', 'vm', 'fs']
     }
   },
@@ -58,9 +63,6 @@ export default defineConfig({
     }),
     postBuildPlugin({
       files: ['index.html', 'plugin.json', 'preload.js']
-    }),
-    monacoEditorPlugin({
-      languageWorkers: ['editorWorkerService', 'typescript']
     })
   ]
 })

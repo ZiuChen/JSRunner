@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import * as monaco from 'monaco-editor'
+import { monaco } from '@/common/monaco'
 import { debounce } from 'lodash-es'
 import { IS_DARK } from '@/common/symbol'
 
