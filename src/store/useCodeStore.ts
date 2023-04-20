@@ -75,7 +75,7 @@ export const useCodeStore = defineStore('CodeSrore', {
     changeEnv() {
       if (!isElectron) return Message.warning('当前环境不支持切换运行环境')
       this.env = this.env === 'browser' ? 'node' : 'browser'
-      if (this.env === 'node') setItem('env', 'node')
+      if (this.env === 'browser') setItem('env', 'browser')
       else removeItem('env') // keep storage clean
     },
 

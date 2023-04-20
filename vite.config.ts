@@ -3,6 +3,7 @@ import fs from 'fs'
 import process from 'process'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import utools from 'vite-plugin-utools'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ArcoResolver } from 'unplugin-vue-components/resolvers'
@@ -36,6 +37,15 @@ export default defineConfig({
   },
   plugins: [
     vue(),
+    utools({
+      external: 'uTools',
+      preload: {
+        path: './public/preload.js',
+        watch: true,
+        name: 'window.preload'
+      },
+      buildUpx: false
+    }),
     AutoImport({
       imports: ['vue', 'vue-router', 'pinia'],
       resolvers: [ArcoResolver()]
