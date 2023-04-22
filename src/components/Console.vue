@@ -23,8 +23,8 @@
           >
             {{ formatTime(item.timeStamp).split(' ')[1] }}
           </a-button>
-          <div class="content" @click="handleCopyClick(getMessageContent(toRaw(item.content)))">
-            {{ getMessageContent(toRaw(item.content)) }}
+          <div class="content" @click="handleCopyClick(getMessageContent(item.content))">
+            {{ getMessageContent(item.content) }}
           </div>
         </div>
       </transition-group>
@@ -68,10 +68,15 @@ watch(
 )
 
 function getMessageContent(content: (typeof props.messages)[number]['content']) {
-  return content
-    .map((item) =>
-      classof(item) === 'Array' || classof(item) === 'Object' ? JSON.stringify(item) : item
-    )
+  return toRaw(content)
+    .map((item) => {
+      if (classof(item) === 'Array' || classof(item) === 'Object') {
+        return JSON.stringify(item)
+      } else if (classof(item) === 'String') {
+        return `"${item}"`
+      }
+      return item
+    })
     .join('\n')
 }
 
