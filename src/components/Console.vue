@@ -23,8 +23,8 @@
           >
             {{ formatTime(item.timeStamp).split(' ')[1] }}
           </a-button>
-          <div class="content" @click="handleCopyClick(item.text)">
-            {{ item.text }}
+          <div class="content" @click="handleCopyClick(getMessageContent(toRaw(item.content)))">
+            {{ getMessageContent(toRaw(item.content)) }}
           </div>
         </div>
       </transition-group>
@@ -33,15 +33,16 @@
 </template>
 
 <script setup lang="ts">
+import { toRaw } from 'vue'
 import { Message } from '@arco-design/web-vue'
-import { formatTime, copyText } from '@/utils'
+import { formatTime, copyText, classof } from '@/utils'
 
 export interface PropsType {
   messages: IMessage[]
 }
 
 export interface IMessage {
-  text: string
+  content: (object | string | number)[]
   type?: 'log' | 'warn' | 'error' | 'info'
   timeStamp: number
   id: string
@@ -65,6 +66,15 @@ watch(
     }
   }
 )
+
+function getMessageContent(content: (typeof props.messages)[number]['content']) {
+  console.log(typeof content)
+  return content
+    .map((item) =>
+      classof(item) === 'Array' || classof(item) === 'Object' ? JSON.stringify(item) : item
+    )
+    .join('\n')
+}
 
 function handleCopyClick(text: string | number) {
   const res = copyText(String(text))

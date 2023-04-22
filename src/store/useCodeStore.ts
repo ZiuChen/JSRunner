@@ -81,8 +81,10 @@ export const useCodeStore = defineStore('CodeSrore', {
 
     changeMode() {
       this.mode = this.mode === 'manual' ? 'ontime' : 'manual'
-      if (this.mode === 'ontime') setItem('mode', 'ontime')
-      else removeItem('mode')
+      if (this.mode === 'ontime') {
+        setItem('mode', 'ontime')
+        this.execCode() // exec code immediate when mode change to `ontime`
+      } else removeItem('mode')
     },
 
     loadHistorys() {
@@ -122,7 +124,7 @@ export const useCodeStore = defineStore('CodeSrore', {
     execCode() {
       if (!this.code) return Message.warning('当前代码为空')
 
-      const handleConsole = (stdout: any, stderr: any) => {
+      const handleConsole = (stdout: any[], stderr: any[]) => {
         const id = uniqueId()
         const timeStamp = new Date().getTime()
 
@@ -131,9 +133,9 @@ export const useCodeStore = defineStore('CodeSrore', {
             id,
             timeStamp,
             type: 'log',
-            text: JSON.stringify(stdout[0]) || stdout
+            content: stdout
           })
-        if (stderr) this.pushMessage({ id, timeStamp, type: 'error', text: stderr })
+        if (stderr) this.pushMessage({ id, timeStamp, type: 'error', content: stderr })
       }
 
       this.env === 'browser'
