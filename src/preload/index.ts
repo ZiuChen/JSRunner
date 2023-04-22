@@ -4,6 +4,7 @@ import 'ses'
 declare global {
   interface Window {
     preload: {
+      electron: any
       Buffer: typeof _Buffer
       require: NodeRequire
     }
@@ -13,6 +14,8 @@ declare global {
 function emptyFuncFactory() {
   return new Function()
 }
+
+export const electron = window.preload?.electron || emptyFuncFactory()
 
 export const Buffer = window.preload?.Buffer || (emptyFuncFactory() as typeof _Buffer)
 

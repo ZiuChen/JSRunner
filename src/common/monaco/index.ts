@@ -132,10 +132,14 @@ self.MonacoEnvironment = {
   }
 }
 
-// 导入uTools声明文件
-import apis from './types/utools.api.d.ts?raw'
+// 导入声明文件
+import uToolsApis from './types/utools.api.d.ts?raw'
+import NodeApis from './types/node.api.d.ts?raw'
+import ElectronApis from './types/electron.d.ts?raw'
 
-monaco.languages.typescript.javascriptDefaults.addExtraLib(apis, 'utools.api.d.ts')
+monaco.languages.typescript.javascriptDefaults.addExtraLib(uToolsApis, 'utools.api.d.ts')
+monaco.languages.typescript.javascriptDefaults.addExtraLib(NodeApis, 'node.api.d.ts')
+monaco.languages.typescript.javascriptDefaults.addExtraLib(ElectronApis, 'electron.api.d.ts')
 
 monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
   noSemanticValidation: true,
@@ -145,7 +149,7 @@ monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
 monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
   target: monaco.languages.typescript.ScriptTarget.ES2016,
   allowNonTsExtensions: true,
-  allowJs: true,
+  allowJs: true
 })
 
 export { monaco }
