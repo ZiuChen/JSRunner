@@ -1,6 +1,6 @@
 {
   "pluginName": "超级JavaScript",
-  "description": "JavaScript运行器 支持多种运行环境 快速验证代码逻辑",
+  "description": "JavaScript运行器 支持多种运行环境",
   "author": "ZiuChen",
   "homepage": "https://github.com/ZiuChen",
   "main": "index.html",
@@ -10,7 +10,6 @@
   },
   "logo": "logo.png",
   "platform": ["win32", "darwin", "linux"],
-  "pluginSetting": { "single": false },
   "features": [
     {
       "code": "超级JavaScript",
