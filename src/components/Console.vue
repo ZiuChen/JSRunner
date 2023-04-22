@@ -68,7 +68,6 @@ watch(
 )
 
 function getMessageContent(content: (typeof props.messages)[number]['content']) {
-  console.log(typeof content)
   return content
     .map((item) =>
       classof(item) === 'Array' || classof(item) === 'Object' ? JSON.stringify(item) : item

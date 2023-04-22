@@ -113,7 +113,6 @@ export const useCodeStore = defineStore('CodeSrore', {
 
     emptyHistory() {
       this.historys = this.historys.filter((item) => {
-        console.log(item.id, this.codeWithId)
         item.id === this.codeWithId
         return item.id === this.codeWithId
       })
