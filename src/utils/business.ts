@@ -19,7 +19,7 @@ export function runCodeInSandbox(
       require
     }).evaluate(code)
   } catch (error: any) {
-    callback && callback(null, error)
+    callback && callback(null, [error])
   }
 }
 
@@ -34,7 +34,7 @@ export function runCodeInBrowser(
     _globalThis.utools = uToolsLite
     fn(consoleWithCallback(callback), uToolsLite, _globalThis)
   } catch (error: any) {
-    callback && callback(null, error)
+    callback && callback(null, [error])
   }
 }
 
