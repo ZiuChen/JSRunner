@@ -30,7 +30,7 @@ export const useCodeStore = defineStore('CodeSrore', {
       messages: [] as IMessage[],
       env: isElectron ? getItem('env') || 'node' : 'browser',
       historys: [],
-      mode: getItem('mode') || 'manual'
+      mode: getItem('mode') || 'ontime'
     } as ICodeStoreState),
   getters: {
     codeWithId: (state) => `code/${state.id}`,
@@ -42,7 +42,7 @@ export const useCodeStore = defineStore('CodeSrore', {
       if (this.id !== 0) Message.success('成功创建新代码片段')
       this.clearMessages()
       this.id = new Date().getTime()
-      this.code = ''
+      this.code = getItem('lastCodeId') ? '' : 'console.log("Hello, World!")'
       setItem(this.codeWithId, this.code)
       setItem('lastCodeId', this.id)
     },
