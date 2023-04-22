@@ -1,6 +1,8 @@
-import { Buffer, require } from '@/preload'
+import { electron, Buffer, require } from '@/preload'
 import { cloneDeep, concat } from 'lodash-es'
 import { isElectron } from './env'
+
+const uToolsLite = getuToolsLite()
 
 export function runCodeInSandbox(
   code: string,
@@ -11,7 +13,8 @@ export function runCodeInSandbox(
     new Compartment({
       console: consoleWithCallback(callback),
       fetch: fetch.bind(window),
-      utools: getuToolsLite(),
+      utools: uToolsLite,
+      electron,
       Buffer,
       require
     }).evaluate(code)
@@ -26,11 +29,10 @@ export function runCodeInBrowser(
 ) {
   try {
     const fn = new Function('console', 'utools', 'globalThis', `(function(){\n${code}\n})()`)
-    const utools = getuToolsLite()
-    const _globalThis = globalThis
+    const _globalThis = Object.assign({}, globalThis)
     // @ts-ignore
-    _globalThis.utools = utools
-    fn(consoleWithCallback(callback), utools, _globalThis)
+    _globalThis.utools = uToolsLite
+    fn(consoleWithCallback(callback), uToolsLite, _globalThis)
   } catch (error: any) {
     callback && callback(null, error)
   }
