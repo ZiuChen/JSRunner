@@ -19,6 +19,7 @@ import { openLink } from '@/utils'
 
 const btns = [
   { text: '插件主页', url: 'https://ziuchen.gitee.io/project/JSRunner/' },
+  { text: '开源地址', url: 'https://github.com/ZiuChen/JSRunner' },
   { text: '更新日志', url: 'https://ziuchen.gitee.io/project/JSRunner/log/' }
 ]
 
