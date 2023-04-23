@@ -95,8 +95,8 @@ export const useCodeStore = defineStore('CodeSrore', {
       // newest at first
       res.sort((a: any, b: any) => parseInt(a._id.split('/')[1]) - parseInt(b._id.split('/')[1]))
 
-      // restrict historys length
-      const rm = res.splice(0, res.length - 10)
+      // restrict historys length: 25
+      const rm = res.splice(0, res.length - 25)
       rm.forEach((item: any) => removeItem(item._id))
 
       this.historys = res.map((item: any) => ({
@@ -121,7 +121,7 @@ export const useCodeStore = defineStore('CodeSrore', {
     },
 
     execCode() {
-      if (this.mode !== 'ontime' && !this.code) return Message.warning('当前代码为空')
+      if (!this.code) return Message.warning('当前代码为空')
 
       const handleConsole = (stdout: any[], stderr: any[]) => {
         const id = uniqueId()
