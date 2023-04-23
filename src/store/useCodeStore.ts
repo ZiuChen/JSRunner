@@ -121,7 +121,7 @@ export const useCodeStore = defineStore('CodeSrore', {
     },
 
     execCode() {
-      if (!this.code) return Message.warning('当前代码为空')
+      if (this.mode !== 'ontime' && !this.code) return Message.warning('当前代码为空')
 
       const handleConsole = (stdout: any[], stderr: any[]) => {
         const id = uniqueId()
