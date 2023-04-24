@@ -5,7 +5,10 @@
     <a-link @click="openLink('https://github.com/ZiuChen')">ZiuChen</a-link>
     <div class="footer-btns">
       <template v-for="btn of btns">
-        <a-button @click="openLink(btn.url)">{{ btn.text }}</a-button>
+        <a-badge v-if="!!btn?.badge" v-bind="btn.badge">
+          <a-button @click="openLink(btn.url)">{{ btn.text }}</a-button>
+        </a-badge>
+        <a-button v-else @click="openLink(btn.url)">{{ btn.text }}</a-button>
       </template>
     </div>
     <div class="footer-tip">Copyright © 2019-present ZiuChen</div>
@@ -19,7 +22,11 @@ import { openLink } from '@/utils'
 
 const btns = [
   { text: '插件主页', url: 'https://ziuchen.gitee.io/project/JSRunner/' },
-  { text: '开源地址', url: 'https://github.com/ZiuChen/JSRunner' },
+  {
+    text: '开源地址',
+    url: 'https://github.com/ZiuChen/JSRunner',
+    badge: { text: 'Star' }
+  },
   { text: '更新日志', url: 'https://ziuchen.gitee.io/project/JSRunner/log/' }
 ]
 
