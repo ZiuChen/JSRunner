@@ -7,16 +7,7 @@ declare global {
       electron: any
       Buffer: typeof _Buffer
       require: NodeRequire
+      Compartment: typeof Compartment
     }
   }
 }
-
-function emptyFuncFactory() {
-  return new Function()
-}
-
-export const electron = window.preload?.electron || emptyFuncFactory()
-
-export const Buffer = window.preload?.Buffer || (emptyFuncFactory() as typeof _Buffer)
-
-export const require = window.preload?.require || emptyFuncFactory()

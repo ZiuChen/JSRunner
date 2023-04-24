@@ -1,4 +1,3 @@
-import { electron, Buffer, require } from '@/preload'
 import { cloneDeep, concat } from 'lodash-es'
 import { isElectron } from './env'
 
@@ -9,14 +8,13 @@ export function runCodeInSandbox(
   callback: (log?: any, error?: any, warn?: any, info?: any) => any
 ) {
   try {
-    // Compartment: from ses
-    new Compartment({
+    new window.preload.Compartment({
       console: consoleWithCallback(callback),
       fetch: fetch.bind(window),
       utools: uToolsLite,
-      electron,
-      Buffer,
-      require
+      electron: window.preload.electron,
+      Buffer: window.preload.Buffer,
+      require: window.preload.require
     }).evaluate(code)
   } catch (error: any) {
     callback && callback(null, [error])
