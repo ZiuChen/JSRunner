@@ -70,10 +70,16 @@ watch(
 function getMessageContent(content: (typeof props.messages)[number]['content']) {
   return toRaw(content)
     .map((item) => {
-      if (classof(item) === 'Array' || classof(item) === 'Object') {
+      const c = classof(item)
+
+      if (['Array', 'Object'].includes(c)) {
         return JSON.stringify(item)
-      } else if (classof(item) === 'String') {
+      } else if (c === 'String') {
         return `"${item}"`
+      } else if (['Null', 'Undefined'].includes(c)) {
+        return c.toLowerCase()
+      } else if (c === 'Symbol') {
+        return item.toString()
       }
       return item
     })
