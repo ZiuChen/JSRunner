@@ -52,7 +52,11 @@ export default function postBuildPlugin(options: postBuildPluginOptions): Plugin
             })
             return res.code
           },
-          '.json': async (code: string) => JSON.stringify(JSON.parse(code))
+          '.json': async (code: string) => {
+            const data = JSON.parse(code)
+            delete data['development'] // 删除开发环境配置
+            return JSON.stringify(data)
+          }
         }
 
         if (execMap[ext]) {
