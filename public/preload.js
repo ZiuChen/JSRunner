@@ -5,5 +5,6 @@ require('ses')
 window.preload = {
   electron,
   Buffer,
-  require
+  require,
+  Compartment
 }
