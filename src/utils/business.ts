@@ -17,8 +17,12 @@ export function runCodeInSandbox(
     require
   }
   try {
-    vm.createContext(context)
-    vm.runInContext(`(function(){\n${code}\n})()`, context)
+    setTimeout(() => {
+      vm.createContext(context)
+      vm.runInContext(`(async function(){\n${code}\n})()`, context).catch((error: any) => {
+        callback && callback(null, [error])
+      })
+    })
   } catch (error: any) {
     callback && callback(null, [error])
   }
@@ -29,7 +33,7 @@ export function runCodeInBrowser(
   callback: (log?: any, error?: any, warn?: any, info?: any) => any
 ) {
   try {
-    const fn = new Function('console', 'utools', 'globalThis', `(function(){\n${code}\n})()`)
+    const fn = new Function('console', 'utools', 'globalThis', `(async function(){\n${code}\n})()`)
     const _globalThis = Object.assign({}, globalThis)
     // @ts-ignore
     _globalThis.utools = uToolsLite
