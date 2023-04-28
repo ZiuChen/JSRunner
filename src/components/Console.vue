@@ -71,12 +71,24 @@ function getMessageContent(content: (typeof props.messages)[number]['content']) 
   return toRaw(content)
     .map((item) => {
       const c = classof(item)
-
       if (['Array', 'Object'].includes(c)) {
+        // 处理循环引用
+        const getCircularReplacer = () => {
+          const seen = new WeakSet()
+          return (key: any, value: any) => {
+            if (typeof value === 'object' && value !== null) {
+              if (seen.has(value)) {
+                return key
+              }
+              seen.add(value)
+            }
+            return value
+          }
+        }
         try {
-          return JSON.stringify(item)
-        } catch (e) {
-          return '[Circle Reference]' // TODO: WeakSet rewrite
+          return JSON.stringify(item, getCircularReplacer())
+        } catch (error) {
+          return `[${c}]`
         }
       } else if (c === 'String') {
         return `"${item}"`
