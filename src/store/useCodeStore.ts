@@ -81,8 +81,8 @@ export const useCodeStore = defineStore('CodeSrore', {
 
     changeMode() {
       this.mode = this.mode === 'manual' ? 'ontime' : 'manual'
-      if (this.mode === 'ontime') {
-        setItem('mode', 'ontime')
+      if (this.mode === 'manual') {
+        setItem('mode', 'manual')
         this.execCode() // exec code immediate when mode change to `ontime`
       } else removeItem('mode')
     },
