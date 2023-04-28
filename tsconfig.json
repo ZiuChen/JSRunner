@@ -18,14 +18,7 @@
     },
     "types": ["utools-api-types", "node"]
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "auto-imports.d.ts",
-    "node_modules/ses/types.d.ts"
-  ],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "auto-imports.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }],
   "vueCompilerOptions": {
     "experimentalResolveStyleCssClasses": "never"

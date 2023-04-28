@@ -13,9 +13,6 @@ dependencies:
   pinia:
     specifier: ^2.0.32
     version: 2.0.32(typescript@4.9.5)(vue@3.2.47)
-  ses:
-    specifier: ^0.18.3
-    version: 0.18.3
   tiny-emitter:
     specifier: ^2.1.0
     version: 2.1.0
@@ -1886,10 +1883,6 @@ packages:
       tslib: 2.5.0
       upper-case-first: 2.0.2
     dev: true
-
-  /ses@0.18.3:
-    resolution: {integrity: sha512-deFT7cN12wE8FGDfXrZ/tUDkGofixzNl2bGc/PmF2oTAhh/x+Do6qfNhpmOMSAxnDdqtPinTcBAM94cKHvxjZg==}
-    dev: false
 
   /simple-swizzle@0.2.2:
     resolution: {integrity: sha512-JA//kQgZtbuY83m+xT+tXJkmJncGMTFT+C+g2h2R9uxkYIrE2yy9sgmcLhCnw57/WSD+Eh3J97FPEDFnbXnDUg==}

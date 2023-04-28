@@ -1,5 +1,6 @@
 import { cloneDeep, concat } from 'lodash-es'
 import { isElectron } from './env'
+import { electron, Buffer, require, vm } from '@/preload'
 
 const uToolsLite = getuToolsLite()
 
@@ -7,15 +8,17 @@ export function runCodeInSandbox(
   code: string,
   callback: (log?: any, error?: any, warn?: any, info?: any) => any
 ) {
+  const context = {
+    console: consoleWithCallback(callback),
+    fetch: fetch.bind(window),
+    utools: uToolsLite,
+    electron,
+    Buffer,
+    require
+  }
   try {
-    new window.preload.Compartment({
-      console: consoleWithCallback(callback),
-      fetch: fetch.bind(window),
-      utools: uToolsLite,
-      electron: window.preload.electron,
-      Buffer: window.preload.Buffer,
-      require: window.preload.require
-    }).evaluate(code)
+    vm.createContext(context)
+    vm.runInContext(`(function(){\n${code}\n})()`, context)
   } catch (error: any) {
     callback && callback(null, [error])
   }

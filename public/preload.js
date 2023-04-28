@@ -1,10 +1,10 @@
 const electron = require('electron')
 const { Buffer } = require('buffer')
-require('ses')
+const vm = require('vm')
 
 window.preload = {
   electron,
   Buffer,
   require,
-  Compartment
+  vm
 }
