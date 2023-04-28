@@ -73,7 +73,11 @@ function getMessageContent(content: (typeof props.messages)[number]['content']) 
       const c = classof(item)
 
       if (['Array', 'Object'].includes(c)) {
-        return JSON.stringify(item)
+        try {
+          return JSON.stringify(item)
+        } catch (e) {
+          return '[Circle Reference]' // TODO: WeakSet rewrite
+        }
       } else if (c === 'String') {
         return `"${item}"`
       } else if (['Null', 'Undefined'].includes(c)) {
