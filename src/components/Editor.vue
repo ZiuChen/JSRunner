@@ -52,7 +52,7 @@ function initEditor() {
     editor = null
   }
 
-  editor = monaco.editor.create(editorRef.value!, {
+  editor = monaco.editor.create(editorRef.value as HTMLDivElement, {
     value: props.code,
     language: 'javascript',
     theme: isDark?.value ? 'vs-dark' : 'vs',
