@@ -76,7 +76,7 @@ function initEditor() {
       // IMPORTANT: toRaw() is required to get the raw value if the value is a reactive object
       // OR use original object at the beginning
       emit('codeChange', editor!.getValue())
-    }, 1000)
+    }, 350)
   )
 
   editor.focus()

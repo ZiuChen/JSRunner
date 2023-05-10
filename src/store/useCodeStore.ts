@@ -10,7 +10,7 @@ import {
   classof
 } from '@/utils'
 import { IMessage } from '@/components/Console.vue'
-import { uniqueId } from 'lodash-es'
+import { uniqueId, throttle } from 'lodash-es'
 import { Message } from '@arco-design/web-vue'
 
 export interface ICodeStoreState {
@@ -21,6 +21,8 @@ export interface ICodeStoreState {
   historys: { id: string; timeStamp: number; code: string }[]
   mode: 'ontime' | 'manual'
 }
+
+export interface ICodeStore extends ReturnType<typeof useCodeStore> {}
 
 export const useCodeStore = defineStore('CodeSrore', {
   state: () =>
@@ -120,26 +122,31 @@ export const useCodeStore = defineStore('CodeSrore', {
       Message.success('清空历史记录成功')
     },
 
-    execCode() {
-      if (!this.code) return Message.warning('当前代码为空')
+    execCode: throttle(
+      function (this: ICodeStore) {
+        // bind this to avoid type error
+        if (!this.code) return Message.warning('当前代码为空')
 
-      const handleConsole = (stdout: any[], stderr: any[]) => {
-        const id = uniqueId()
-        const timeStamp = new Date().getTime()
+        const handleConsole = (stdout: any[], stderr: any[]) => {
+          const id = uniqueId()
+          const timeStamp = new Date().getTime()
 
-        if (stdout && stdout?.length)
-          this.pushMessage({
-            id,
-            timeStamp,
-            type: 'log',
-            content: stdout
-          })
-        if (stderr) this.pushMessage({ id, timeStamp, type: 'error', content: stderr })
-      }
+          if (stdout && stdout?.length)
+            this.pushMessage({
+              id,
+              timeStamp,
+              type: 'log',
+              content: stdout
+            })
+          if (stderr) this.pushMessage({ id, timeStamp, type: 'error', content: stderr })
+        }
 
-      this.env === 'browser'
-        ? runCodeInBrowser(this.code, handleConsole)
-        : runCodeInSandbox(this.code, handleConsole)
-    }
+        this.env === 'browser'
+          ? runCodeInBrowser(this.code, handleConsole)
+          : runCodeInSandbox(this.code, handleConsole)
+      },
+      350,
+      { leading: true }
+    )
   }
 })
