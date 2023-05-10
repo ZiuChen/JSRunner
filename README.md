@@ -10,6 +10,6 @@
 - ✅ `Ctrl/Command+R` Quickly run code
 - ✅ Support code backtracking, record code running history in real time
 - ✅ Support manually triggering code execution/running code in real time
-- ✅ Adapt to dark mode
+- ✅ Support top-level await. Adapt to dark mode
 
 ![](./docs/img1.png)
