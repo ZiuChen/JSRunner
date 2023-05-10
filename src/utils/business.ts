@@ -17,11 +17,9 @@ export function runCodeInSandbox(
     require
   }
   try {
-    setTimeout(() => {
-      vm.createContext(context)
-      vm.runInContext(`(async function(){\n${code}\n})()`, context).catch((error: any) => {
-        callback && callback(null, [error])
-      })
+    vm.createContext(context)
+    vm.runInContext(`(async function(){\n${code}\n})()`, context).catch((error: any) => {
+      callback && callback(null, [error])
     })
   } catch (error: any) {
     callback && callback(null, [error])
