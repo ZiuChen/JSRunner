@@ -1,1 +1,1 @@
-const electron=require("electron"),{Buffer}=require("buffer");require("ses"),window.preload={electron,Buffer,require,Compartment};
+const electron=require("electron"),{Buffer}=require("buffer"),vm=require("vm");window.preload={electron,Buffer,require,vm};
