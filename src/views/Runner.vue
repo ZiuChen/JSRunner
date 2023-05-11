@@ -51,8 +51,6 @@
 </template>
 
 <script setup lang="ts">
-import Editor from '@/components/Editor.vue'
-import Console from '@/components/Console.vue'
 import { useCodeStore } from '@/store'
 import { setItem, getItem, formatTime } from '@/utils'
 
