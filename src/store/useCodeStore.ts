@@ -77,16 +77,12 @@ export const useCodeStore = defineStore('CodeSrore', {
     changeEnv() {
       if (!isElectron) return Message.warning('当前环境不支持切换运行环境')
       this.env = this.env === 'browser' ? 'node' : 'browser'
-      if (this.env === 'browser') setItem('env', 'browser')
-      else removeItem('env') // keep storage clean
+      this.env === 'browser' ? setItem('env', 'browser') : removeItem('env')
     },
 
     changeMode() {
       this.mode = this.mode === 'manual' ? 'ontime' : 'manual'
-      if (this.mode === 'manual') {
-        setItem('mode', 'manual')
-        this.execCode() // exec code immediate when mode change to `ontime`
-      } else removeItem('mode')
+      this.mode === 'manual' ? setItem('mode', 'manual') : removeItem('mode')
     },
 
     loadHistorys() {
