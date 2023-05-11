@@ -85,5 +85,9 @@ onMounted(() => store.loadCode(lastCodeId))
 .active-option {
   background-color: var(--color-primary-light-4);
   color: var(--bg-color);
+  &:hover {
+    background-color: var(--color-primary-light-4);
+    color: var(--bg-color);
+  }
 }
 </style>
