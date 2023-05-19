@@ -1,13 +1,13 @@
 import { cloneDeep, concat } from 'lodash-es'
 import { isElectron } from './env'
-import { electron, Buffer, require, vm } from '@/preload'
 
 const uToolsLite = getuToolsLite()
 
-export function runCodeInSandbox(
+export async function runCodeInSandbox(
   code: string,
   callback: (log?: any, error?: any, warn?: any, info?: any) => any
 ) {
+  const { electron, Buffer, require, vm } = await import('@/preload')
   const context = {
     console: consoleWithCallback(callback),
     fetch: fetch.bind(window),
@@ -31,7 +31,12 @@ export function runCodeInBrowser(
   callback: (log?: any, error?: any, warn?: any, info?: any) => any
 ) {
   try {
-    const fn = new Function('console', 'utools', 'globalThis', `(async function(){\n${code}\n})()`)
+    const fn = new Function(
+      'console',
+      'utools',
+      'globalThis',
+      `(async function(){\ntry{${code}}catch(error){console.error(error)}\n})()`
+    )
     const _globalThis = Object.assign({}, globalThis)
     // @ts-ignore
     _globalThis.utools = uToolsLite
