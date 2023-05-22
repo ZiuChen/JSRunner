@@ -44,6 +44,8 @@
           :code="store.code"
           @code-change="store.handleCodeChange"
           @run-code="store.execCode"
+          @new-code="store.newCode"
+          @clear-messages="store.clearMessages"
         />
       </template>
       <template #second>

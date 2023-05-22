@@ -16,7 +16,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['codeChange', 'runCode'])
+const emit = defineEmits(['codeChange', 'runCode', 'newCode', 'clearMessages'])
 
 const isDark = inject<Ref<boolean>>(IS_DARK)
 const editorRef = ref<HTMLDivElement | null>(null)
@@ -69,6 +69,22 @@ function initEditor() {
     keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyR],
     contextMenuGroupId: 'navigation', // 所属菜单的分组
     run: () => emit('runCode') // 菜单项点击事件
+  })
+
+  editor.addAction({
+    id: 'newCode',
+    label: 'New Code',
+    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyN],
+    contextMenuGroupId: 'navigation',
+    run: () => emit('newCode')
+  })
+
+  editor.addAction({
+    id: 'clearMessages',
+    label: 'Clear Messages',
+    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyQ],
+    contextMenuGroupId: 'navigation',
+    run: () => emit('clearMessages')
   })
 
   editor.getModel()?.onDidChangeContent(
