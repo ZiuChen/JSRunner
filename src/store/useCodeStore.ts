@@ -50,11 +50,8 @@ export const useCodeStore = defineStore('CodeSrore', {
     },
 
     loadCode(id: number) {
-      this.clearMessages()
       const code = getItem(`code/${id}`)
-
       if (classof(code) === 'Null') return this.newCode()
-
       this.id = id
       this.code = code
     },
