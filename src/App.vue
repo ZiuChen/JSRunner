@@ -1,7 +1,9 @@
 <template>
-  <keep-alive :include="['Console']">
-    <router-view></router-view>
-  </keep-alive>
+  <router-view v-slot="{ Component }">
+    <keep-alive :include="['Console']">
+      <component :is="Component" />
+    </keep-alive>
+  </router-view>
 </template>
 
 <script lang="ts" setup>

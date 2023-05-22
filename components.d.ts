@@ -13,12 +13,16 @@ declare module '@vue/runtime-core' {
     AButton: typeof import('@arco-design/web-vue')['Button']
     ADoption: typeof import('@arco-design/web-vue')['Doption']
     ADropdown: typeof import('@arco-design/web-vue')['Dropdown']
+    AInput: typeof import('@arco-design/web-vue')['Input']
     ALink: typeof import('@arco-design/web-vue')['Link']
     ASplit: typeof import('@arco-design/web-vue')['Split']
+    ATag: typeof import('@arco-design/web-vue')['Tag']
     ATooltip: typeof import('@arco-design/web-vue')['Tooltip']
     Console: typeof import('./src/components/Console.vue')['default']
     Editor: typeof import('./src/components/Editor.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    ShortCut: typeof import('./src/components/ShortCut.vue')['default']
+    ShortCuts: typeof import('./src/components/ShortCuts.vue')['default']
   }
 }

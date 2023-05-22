@@ -10,6 +10,9 @@
       <a-tooltip content="清空控制台">
         <a-button @click="store.clearMessages"><icon-stop /></a-button>
       </a-tooltip>
+      <a-tooltip content="设置">
+        <a-button @click="$router.push('/setting')"><icon-settings /></a-button>
+      </a-tooltip>
       <a-tooltip content="关于">
         <a-button @click="$router.push('/about')"><icon-info-circle /></a-button>
       </a-tooltip>

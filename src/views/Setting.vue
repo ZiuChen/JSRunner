@@ -1,6 +1,7 @@
 <template>
   <div class="setting">
     <BackButton />
+    <ShortCuts />
   </div>
 </template>
 
@@ -10,4 +11,8 @@ import { usePageBack } from '@/hooks/usePageBack'
 const { BackButton } = usePageBack()
 </script>
 
-<style scoped></style>
+<style lang="less" scoped>
+.setting {
+  margin: 0 50px;
+}
+</style>
