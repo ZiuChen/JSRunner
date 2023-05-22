@@ -1,8 +1,8 @@
 <template>
   <div class="short-cut">
-    <div class="short-cut-desc">{{ description }}</div>
     <a-input
       class="short-cut-input"
+      ref="inputRef"
       v-model="shortcutString"
       @keydown="handleInputKeydown"
       @keyup="handleInputKeyup"
@@ -13,21 +13,24 @@
 </template>
 
 <script setup lang="ts">
-import { Message } from '@arco-design/web-vue'
+import { Input, Message } from '@arco-design/web-vue'
 
 const props = defineProps({
-  description: {
+  id: {
     type: String,
     required: true
   },
-  defaultValue: {
+  defaultKeys: {
     type: Object as PropType<string[]>,
     required: true
   }
 })
 
+const emit = defineEmits(['change'])
+
 const metas = ['Control', 'Meta', 'Alt', 'Shift']
 const fnKeys = ['F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12']
+const inputRef = ref<InstanceType<typeof Input>>()
 const shortcutKeys = ref<string[]>([])
 const shortcutString = computed(() => shortcutKeys.value.join(' + '))
 const isMeta = ref(false)
@@ -57,14 +60,16 @@ function handleInputKeyup(ev: KeyboardEvent) {
   const { key } = ev
   if (metas.includes(key)) isMeta.value = false
   if (fnKeys.includes(key)) isFn.value = false
-
-  if (metas.includes(key) && shortcutKeys.value.length === 1) {
-    shortcutKeys.value = []
+  if (metas.includes(key)) {
+    shortcutKeys.value.length === 1
+      ? (shortcutKeys.value = [])
+      : emit('change', props.id, shortcutKeys.value),
+      inputRef.value?.blur()
   }
 }
 
 function handleResetClick() {
-  shortcutKeys.value = props.defaultValue
+  shortcutKeys.value = props.defaultKeys
   isMeta.value = false
   isFn.value = false
   Message.success('快捷键已重置')
@@ -73,11 +78,7 @@ function handleResetClick() {
 
 <style lang="less" scoped>
 .short-cut {
-  padding: 10px;
-}
-
-.short-cut-desc {
-  margin-bottom: 10px;
+  padding: 5px 0;
 }
 
 .short-cut-input {
