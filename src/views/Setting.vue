@@ -1,7 +1,7 @@
 <template>
   <div class="setting">
     <BackButton />
-    <ShortCuts />
+    <ThemeSetting />
   </div>
 </template>
 
