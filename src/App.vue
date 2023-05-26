@@ -7,9 +7,8 @@
 </template>
 
 <script lang="ts" setup>
-import { useDarkMode } from '@/hooks/useDarkMode'
-import { IS_DARK } from '@/common/symbol'
+import { useSettingStore } from '@/store'
 
-const isDark = useDarkMode()
-provide(IS_DARK, isDark)
+const settingStore = useSettingStore()
+settingStore.setTheme(settingStore.theme)
 </script>

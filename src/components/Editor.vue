@@ -7,8 +7,10 @@
 <script setup lang="ts">
 import { monaco } from '@/common/monaco'
 import { debounce } from 'lodash-es'
-import { IS_DARK } from '@/common/symbol'
+import { useSettingStore } from '@/store'
 import { addActions } from '@/common/monaco'
+
+const settingStore = useSettingStore()
 
 const props = defineProps({
   code: {
@@ -19,20 +21,12 @@ const props = defineProps({
 
 const emit = defineEmits(['codeChange', 'runCode', 'newCode', 'clearMessages'])
 
-const isDark = inject<Ref<boolean>>(IS_DARK)
 const editorRef = ref<HTMLDivElement | null>(null)
 let editor: monaco.editor.IStandaloneCodeEditor | null = null
 
 watch(
-  () => isDark?.value,
+  () => settingStore.isDark,
   () => initEditor()
-)
-
-watch(
-  () => props.code,
-  () => {
-    if (editor?.getValue() !== props.code) editor?.setValue(props.code)
-  }
 )
 
 onMounted(() => {
@@ -53,10 +47,12 @@ function initEditor() {
     editor = null
   }
 
+  console.log('props.code', props.code)
+
   editor = monaco.editor.create(editorRef.value as HTMLDivElement, {
     value: props.code,
     language: 'javascript',
-    theme: isDark?.value ? 'vs-dark' : 'vs',
+    theme: settingStore.isDark ? 'vs-dark' : 'vs',
     tabSize: 2,
     minimap: {
       enabled: false
