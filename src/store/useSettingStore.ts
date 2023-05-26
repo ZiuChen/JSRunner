@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { setThemeMode } from '@/hooks/usePrefersTheme'
 import { setItem, getItem, removeItem } from '@/utils'
+import { useMedia } from '@/hooks/useMedia'
 
 export type Theme = 'default' | 'dark' | 'light'
 
@@ -14,7 +15,10 @@ export const useSettingStore = defineStore('setting', {
   }),
 
   getters: {
-    isDark: ({ theme }) => theme === 'dark'
+    isDark: ({ theme }) => {
+      const isDark = useMedia('(prefers-color-scheme: dark)')
+      return theme === 'dark' || (theme === 'default' && isDark.value)
+    }
   },
 
   actions: {

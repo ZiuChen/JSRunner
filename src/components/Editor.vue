@@ -47,7 +47,7 @@ function initEditor() {
     editor = null
   }
 
-  console.log('props.code', props.code)
+  console.log('settingStore.isDark', settingStore.isDark)
 
   editor = monaco.editor.create(editorRef.value as HTMLDivElement, {
     value: props.code,
