@@ -63,8 +63,9 @@ const size = ref(getItem('size') || 0.75)
 const store = useCodeStore()
 const lastCodeId = getItem('lastCodeId') || 0
 
+store.loadCode(lastCodeId)
+
 watch(size, (val) => setItem('size', val))
-onMounted(() => store.loadCode(lastCodeId))
 </script>
 
 <style lang="less" scoped>
