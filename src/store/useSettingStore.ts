@@ -22,6 +22,10 @@ export const useSettingStore = defineStore('setting', {
   },
 
   actions: {
+    initSetting() {
+      this.setTheme(this.theme)
+    },
+
     setTheme(theme: Theme) {
       this.theme = theme
       theme === 'default' ? removeItem(withPrefix('theme')) : setItem(withPrefix('theme'), theme)

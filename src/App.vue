@@ -10,5 +10,5 @@
 import { useSettingStore } from '@/store'
 
 const settingStore = useSettingStore()
-settingStore.setTheme(settingStore.theme)
+settingStore.initSetting()
 </script>
