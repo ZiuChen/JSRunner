@@ -153,3 +153,4 @@ monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
 })
 
 export { monaco }
+export * from './addActions'
