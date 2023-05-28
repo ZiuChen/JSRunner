@@ -35,7 +35,11 @@ export default defineConfig({
     port: 8084
   },
   plugins: [
-    vue(),
+    vue({
+      script: {
+        defineModel: true
+      }
+    }),
     AutoImport({
       imports: ['vue', 'vue-router', 'pinia'],
       resolvers: [ArcoResolver()]

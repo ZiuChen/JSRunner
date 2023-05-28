@@ -41,17 +41,20 @@
     <a-split v-model:size="size" :min="0.1" :max="0.8">
       <template #first>
         <Editor
+          ref="editorRef"
           :code="store.code"
           @code-change="store.handleCodeChange"
           @run-code="store.execCode"
           @new-code="store.newCode"
           @clear-messages="store.clearMessages"
+          @save-feature="featureVisible = true"
         />
       </template>
       <template #second>
         <Console :messages="store.messages" />
       </template>
     </a-split>
+    <Feature v-model="featureVisible" @close="() => editorRef!.editor!.focus()"></Feature>
   </div>
 </template>
 
@@ -59,7 +62,9 @@
 import { useCodeStore } from '@/store'
 import { setItem, getItem, formatTime } from '@/utils'
 
+const editorRef = ref()
 const size = ref(getItem('size') || 0.75)
+const featureVisible = ref(false)
 const store = useCodeStore()
 const lastCodeId = getItem('lastCodeId') || 0
 
