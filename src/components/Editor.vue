@@ -19,7 +19,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['codeChange', 'runCode', 'newCode', 'clearMessages'])
+const emit = defineEmits(['codeChange', 'runCode', 'newCode', 'clearMessages', 'saveFeature'])
 
 const editorRef = ref<HTMLDivElement | null>(null)
 let editor: monaco.editor.IStandaloneCodeEditor | null = null
@@ -35,6 +35,10 @@ onMounted(() => {
 
 onUnmounted(() => {
   editor?.dispose()
+})
+
+defineExpose({
+  editor: computed(() => editor)
 })
 
 /**
