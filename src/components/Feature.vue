@@ -23,7 +23,7 @@
             class="name"
             ref="inputRef"
             v-model="scriptInfo.name"
-            max-length="50"
+            :max-length="50"
             placeholder="请输入脚本名称"
             allow-clear
             show-word-limit
@@ -31,7 +31,7 @@
           <a-textarea
             class="description"
             v-model="scriptInfo.description"
-            max-length="100"
+            :max-length="100"
             placeholder="请输入脚本描述"
             auto-size
             allow-clear
@@ -39,19 +39,23 @@
           />
         </div>
       </div>
+      <a-divider />
+      <FeatureForm v-model="scriptInfo.features"></FeatureForm>
     </a-drawer>
   </div>
 </template>
 
 <script setup lang="ts">
 import type { Input } from '@arco-design/web-vue'
+
 const emit = defineEmits(['open', 'close', 'save'])
 const inputRef = ref<InstanceType<typeof Input>>()
 const visible = defineModel<boolean>()
 const scriptInfo = reactive({
   logo: '/logo.png',
   name: '',
-  description: ''
+  description: '',
+  features: []
 })
 
 function handleDrawerKeydown(ev: KeyboardEvent) {

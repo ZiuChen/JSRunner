@@ -6,7 +6,9 @@ import {
   IconPlus,
   IconStop,
   IconThunderbolt,
-  IconSettings
+  IconSettings,
+  IconCloseCircle,
+  IconDown
 } from '@arco-design/web-vue/es/icon'
 
 const icons = [
@@ -16,7 +18,9 @@ const icons = [
   IconPlus,
   IconStop,
   IconThunderbolt,
-  IconSettings
+  IconSettings,
+  IconCloseCircle,
+  IconDown
 ]
 
 export function registerIcon(app: App) {
