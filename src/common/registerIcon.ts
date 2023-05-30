@@ -8,7 +8,8 @@ import {
   IconThunderbolt,
   IconSettings,
   IconCloseCircle,
-  IconDown
+  IconDown,
+  IconEdit
 } from '@arco-design/web-vue/es/icon'
 
 const icons = [
@@ -20,7 +21,8 @@ const icons = [
   IconThunderbolt,
   IconSettings,
   IconCloseCircle,
-  IconDown
+  IconDown,
+  IconEdit
 ]
 
 export function registerIcon(app: App) {

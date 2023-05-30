@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { uniqueId } from 'lodash-es'
 import type { setFeature } from 'utools-api-types'
+import { isElectron } from '@/utils'
 import { featureCmdMap, featureMap, featureKey, Config } from '@/common/feature'
 
 export interface FeatureState {
@@ -14,6 +15,9 @@ export interface FeatureState {
     model: Config[] | Config
     value: any[]
   }[]
+  isEditorVisible: boolean
+  cmdString: string
+  cmdParsed: any
 }
 
 export type Feature = Parameters<typeof setFeature>[0]
@@ -23,7 +27,10 @@ export const useFeatureStore = defineStore('feature', {
     name: '',
     description: '',
     logo: '/logo.png',
-    features: []
+    features: [], // TODO: form editor
+    isEditorVisible: false,
+    cmdString: JSON.stringify(['快捷脚本', 'QuickScript'], null, 2),
+    cmdParsed: {}
   }),
   actions: {
     pushFeature(type: featureKey) {
@@ -43,8 +50,16 @@ export const useFeatureStore = defineStore('feature', {
       }
     },
 
+    setFeatureVisible(visible: boolean) {
+      this.isEditorVisible = isElectron ? visible : false
+    },
+
+    handlecmdStringChange(s: string) {
+      this.cmdString = s
+    },
+
     saveScript() {
-      console.log(this.features)
+      console.log(this.cmdString)
     }
   }
 })

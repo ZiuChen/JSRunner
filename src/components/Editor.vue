@@ -12,12 +12,16 @@ import { addActions } from '@/common/monaco'
 
 const settingStore = useSettingStore()
 
-const props = defineProps({
-  code: {
-    type: String,
-    default: ''
+const props = withDefaults(
+  defineProps<{
+    code: string
+    language: 'javascript' | 'typescript' | 'json'
+  }>(),
+  {
+    code: '',
+    language: 'javascript'
   }
-})
+)
 
 const emit = defineEmits(['codeChange', 'runCode', 'newCode', 'clearMessages', 'saveFeature'])
 
@@ -51,11 +55,9 @@ function initEditor() {
     editor = null
   }
 
-  console.log('settingStore.isDark', settingStore.isDark)
-
   editor = monaco.editor.create(editorRef.value as HTMLDivElement, {
     value: props.code,
-    language: 'javascript',
+    language: props.language,
     theme: settingStore.isDark ? 'vs-dark' : 'vs',
     tabSize: 2,
     minimap: {

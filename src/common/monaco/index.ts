@@ -120,6 +120,8 @@ import 'monaco-editor/esm/vs/basic-languages/javascript/javascript.contribution'
 import 'monaco-editor/esm/vs/basic-languages/typescript/typescript.contribution'
 import 'monaco-editor/esm/vs/language/typescript/monaco.contribution'
 import TSWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
+import JSONWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker'
+import 'monaco-editor/esm/vs/language/json/monaco.contribution'
 
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
 
@@ -127,6 +129,9 @@ self.MonacoEnvironment = {
   getWorker(_: string, label: string) {
     if (label === 'typescript' || label === 'javascript') {
       return new TSWorker()
+    }
+    if (label === 'json') {
+      return new JSONWorker()
     }
     return new EditorWorker()
   }

@@ -8,6 +8,7 @@
       @close="handleDrawerClose"
       @ok="handleOk"
       @cancel="handleCancel"
+      unmount-on-close
     >
       <template #title> 快捷脚本 </template>
       <div class="title">
@@ -15,7 +16,6 @@
         <div class="input-field">
           <a-input
             class="name"
-            ref="inputRef"
             v-model="store.name"
             :max-length="50"
             placeholder="请输入脚本名称"
@@ -34,22 +34,35 @@
         </div>
       </div>
       <a-divider />
-      <FeatureForm v-model="store.features"></FeatureForm>
+      <a-button type="text" v-if="!store.isEditorVisible" @click="store.setFeatureVisible(true)">
+        编辑关键字
+        <template #icon>
+          <icon-edit />
+        </template>
+      </a-button>
+      <div class="editor-tip" v-if="store.isEditorVisible">
+        关键字编辑器
+        <icon-info-circle class="tip-icon" @click="handleTipIconClick" />
+      </div>
+      <Editor
+        v-if="store.isEditorVisible"
+        :code="store.cmdString"
+        :language="'json'"
+        @code-change="store.handlecmdStringChange"
+      />
     </a-drawer>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Input } from '@arco-design/web-vue'
 import { useFeatureStore } from '@/store'
+import { openLink } from '@/utils'
 
 defineProps<{
   visible: boolean
 }>()
 
 const emit = defineEmits(['close'])
-const inputRef = ref<InstanceType<typeof Input>>()
-
 const store = useFeatureStore()
 
 function handleDrawerKeydown(ev: KeyboardEvent) {
@@ -60,7 +73,6 @@ function handleDrawerKeydown(ev: KeyboardEvent) {
 }
 
 function handleDrawerOpen() {
-  inputRef.value?.focus() // focus input, ESC will close drawer
   document.addEventListener('keydown', handleDrawerKeydown)
 }
 
@@ -79,6 +91,10 @@ function handleCancel() {
 
 function handleLogoClick() {
   console.log('logo click')
+}
+
+function handleTipIconClick() {
+  openLink('https://www.u.tools/docs/developer/config.html#features-cmds')
 }
 </script>
 
@@ -102,5 +118,14 @@ function handleLogoClick() {
 .description {
   margin-top: 10px;
   height: 59px;
+}
+.editor-tip {
+  margin: 10px 0;
+  font-size: 15px;
+  font-weight: bold;
+  color: var(--color-text-3);
+  .tip-icon {
+    cursor: pointer;
+  }
 }
 </style>
