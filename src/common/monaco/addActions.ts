@@ -30,10 +30,10 @@ export function addActions(
   })
 
   editor.addAction({
-    id: 'saveFeature',
-    label: 'Save Feature',
+    id: 'saveScript',
+    label: 'Save Script',
     keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS],
     contextMenuGroupId: 'navigation',
-    run: () => emit('saveFeature')
+    run: () => emit('saveScript')
   })
 }

@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { useFeatureStore } from '@/store'
+import { useScriptStore } from '@/store'
 import { openLink } from '@/utils'
 
 defineProps<{
@@ -63,7 +63,7 @@ defineProps<{
 }>()
 
 const emit = defineEmits(['close'])
-const store = useFeatureStore()
+const store = useScriptStore()
 
 function handleDrawerKeydown(ev: KeyboardEvent) {
   if (ev.key === 'Escape') {

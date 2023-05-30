@@ -43,6 +43,7 @@
         <Editor
           ref="editorRef"
           :code="store.code"
+          :language="'javascript'"
           @code-change="store.handleCodeChange"
           @run-code="store.execCode"
           @new-code="store.newCode"

@@ -23,7 +23,7 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits(['codeChange', 'runCode', 'newCode', 'clearMessages', 'saveFeature'])
+const emit = defineEmits(['codeChange', 'runCode', 'newCode', 'clearMessages', 'saveScript'])
 
 const editorRef = ref<HTMLDivElement | null>(null)
 let editor: monaco.editor.IStandaloneCodeEditor | null = null
