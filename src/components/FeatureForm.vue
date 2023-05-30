@@ -7,7 +7,7 @@
       <template v-for="m of f.model">
         <FeatureContent :model="m"></FeatureContent>
       </template>
-      <a-button class="close-btn" type="text" shape="circle">
+      <a-button class="close-btn" type="text" shape="circle" @click="() => handleCancelClick(f.id)">
         <icon-close-circle :size="20"></icon-close-circle>
       </a-button>
     </div>
@@ -28,11 +28,13 @@
 </template>
 
 <script setup lang="ts">
+import { uniqueId } from 'lodash-es'
 import { isElectron } from '@/utils'
 import { featureCmdMap, featureKey, featureMap, Config } from '@/common/feature'
 
 const features = defineModel<
   {
+    id: string
     type: featureKey
     name: string
     model: Config[] | Config
@@ -41,10 +43,18 @@ const features = defineModel<
 
 function handleDropdownSelect(type: featureKey) {
   features.value?.push({
+    id: uniqueId(),
     type,
     name: featureCmdMap[type],
     model: featureMap[type]
   })
+}
+
+function handleCancelClick(id: string) {
+  const idx = features.value?.findIndex((f) => f.id === id)
+  if (idx !== undefined && idx !== -1) {
+    features.value?.splice(idx, 1)
+  }
 }
 </script>
 
