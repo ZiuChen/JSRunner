@@ -133,4 +133,4 @@ export const featureMap = {
       label: '窗口类（Windows专有）'
     }
   ]
-} as Record<featureKey, Config[] | Config>
+} as Record<featureKey, Config[]>

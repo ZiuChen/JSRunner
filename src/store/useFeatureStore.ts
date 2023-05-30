@@ -12,6 +12,7 @@ export interface FeatureState {
     type: featureKey
     name: string
     model: Config[] | Config
+    value: any[]
   }[]
 }
 
@@ -30,7 +31,8 @@ export const useFeatureStore = defineStore('feature', {
         id: uniqueId(),
         type,
         name: featureCmdMap[type],
-        model: featureMap[type]
+        model: featureMap[type],
+        value: new Array(featureMap[type].length)
       })
     },
 
@@ -39,6 +41,10 @@ export const useFeatureStore = defineStore('feature', {
       if (idx !== undefined && idx !== -1) {
         this.features.splice(idx, 1)
       }
+    },
+
+    saveScript() {
+      console.log(this.features)
     }
   }
 })

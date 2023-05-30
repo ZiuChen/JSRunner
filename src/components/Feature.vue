@@ -47,7 +47,7 @@ defineProps<{
   visible: boolean
 }>()
 
-const emit = defineEmits(['open', 'close', 'save'])
+const emit = defineEmits(['close'])
 const inputRef = ref<InstanceType<typeof Input>>()
 
 const store = useFeatureStore()
@@ -69,7 +69,7 @@ function handleDrawerClose() {
 }
 
 function handleOk() {
-  emit('save')
+  store.saveScript()
   emit('close')
 }
 

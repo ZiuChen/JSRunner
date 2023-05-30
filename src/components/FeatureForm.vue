@@ -4,8 +4,8 @@
       <div class="feature-name">
         {{ f.name }}
       </div>
-      <template v-for="m of f.model">
-        <FeatureContent :model="m"></FeatureContent>
+      <template v-for="(m, idx) of f.model">
+        <FeatureContent :model="m" v-model="f.value[idx as any]"></FeatureContent>
       </template>
       <a-button class="close-btn" type="text" shape="circle" @click="store.removeFeature(f.id)">
         <icon-close-circle :size="20"></icon-close-circle>
