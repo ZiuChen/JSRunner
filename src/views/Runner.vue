@@ -54,7 +54,7 @@
         <Console :messages="store.messages" />
       </template>
     </a-split>
-    <Feature v-model="featureVisible" @close="() => editorRef!.editor!.focus()"></Feature>
+    <Feature :visible="featureVisible" @close="handleFeatureClose" @save="store.saveScript" />
   </div>
 </template>
 
@@ -71,6 +71,11 @@ const lastCodeId = getItem('lastCodeId') || 0
 store.loadCode(lastCodeId)
 
 watch(size, (val) => setItem('size', val))
+
+function handleFeatureClose() {
+  featureVisible.value = false
+  editorRef.value.editor.focus()
+}
 </script>
 
 <style lang="less" scoped>

@@ -1,17 +1,17 @@
 <template>
   <div class="form">
-    <div class="feature-item" v-for="f of features">
+    <div class="feature-item" v-for="f of store.features">
       <div class="feature-name">
         {{ f.name }}
       </div>
       <template v-for="m of f.model">
         <FeatureContent :model="m"></FeatureContent>
       </template>
-      <a-button class="close-btn" type="text" shape="circle" @click="() => handleCancelClick(f.id)">
+      <a-button class="close-btn" type="text" shape="circle" @click="store.removeFeature(f.id)">
         <icon-close-circle :size="20"></icon-close-circle>
       </a-button>
     </div>
-    <a-dropdown v-if="isElectron" @select="(t) => handleDropdownSelect(t as featureKey)">
+    <a-dropdown v-if="isElectron" @select="(t) => store.pushFeature(t as featureKey)">
       <a-button class="plus-button" type="text">
         <icon-plus />
         <span>添加关键字</span>
@@ -28,34 +28,11 @@
 </template>
 
 <script setup lang="ts">
-import { uniqueId } from 'lodash-es'
 import { isElectron } from '@/utils'
-import { featureCmdMap, featureKey, featureMap, Config } from '@/common/feature'
+import { useFeatureStore } from '@/store'
+import { featureCmdMap, featureKey } from '@/common/feature'
 
-const features = defineModel<
-  {
-    id: string
-    type: featureKey
-    name: string
-    model: Config[] | Config
-  }[]
->()
-
-function handleDropdownSelect(type: featureKey) {
-  features.value?.push({
-    id: uniqueId(),
-    type,
-    name: featureCmdMap[type],
-    model: featureMap[type]
-  })
-}
-
-function handleCancelClick(id: string) {
-  const idx = features.value?.findIndex((f) => f.id === id)
-  if (idx !== undefined && idx !== -1) {
-    features.value?.splice(idx, 1)
-  }
-}
+const store = useFeatureStore()
 </script>
 
 <style lang="less" scoped>

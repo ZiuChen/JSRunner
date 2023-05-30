@@ -140,6 +140,8 @@ export const useCodeStore = defineStore('CodeSrore', {
       },
       350,
       { leading: true }
-    )
+    ),
+
+    saveScript() {}
   }
 })

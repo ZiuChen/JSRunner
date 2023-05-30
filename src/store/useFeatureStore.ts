@@ -1,28 +1,44 @@
 import { defineStore } from 'pinia'
+import { uniqueId } from 'lodash-es'
 import type { setFeature } from 'utools-api-types'
+import { featureCmdMap, featureMap, featureKey, Config } from '@/common/feature'
 
 export interface FeatureState {
-  features: Feature[]
+  name: string
+  description: string
+  logo: string
+  features: {
+    id: string
+    type: featureKey
+    name: string
+    model: Config[] | Config
+  }[]
 }
 
 export type Feature = Parameters<typeof setFeature>[0]
 
 export const useFeatureStore = defineStore('feature', {
   state: (): FeatureState => ({
-    features: [
-      {
-        code: 'feature1',
-        explain: '功能1',
-        platform: ['win32', 'darwin'],
-        cmds: ['feature1']
-      }
-    ]
+    name: '',
+    description: '',
+    logo: '/logo.png',
+    features: []
   }),
   actions: {
-    addFeature(feature: Feature) {
-      this.features.push(feature)
+    pushFeature(type: featureKey) {
+      this.features.push({
+        id: uniqueId(),
+        type,
+        name: featureCmdMap[type],
+        model: featureMap[type]
+      })
     },
 
-    removeFeature(code: string) {}
+    removeFeature(id: string) {
+      const idx = this.features.findIndex((f) => f.id === id)
+      if (idx !== undefined && idx !== -1) {
+        this.features.splice(idx, 1)
+      }
+    }
   }
 })
