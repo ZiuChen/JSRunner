@@ -66,9 +66,8 @@ const editorRef = ref()
 const size = ref(getItem('size') || 0.75)
 const featureVisible = ref(false)
 const store = useCodeStore()
-const lastCodeId = getItem('lastCodeId') || 0
 
-store.loadCode(lastCodeId)
+store.init()
 
 watch(size, (val) => setItem('size', val))
 

@@ -40,6 +40,11 @@ export const useCodeStore = defineStore('CodeSrore', {
     currentMode: (state) => (state.mode === 'ontime' ? '即时执行' : '手动触发')
   },
   actions: {
+    init() {
+      const lastCodeId = getItem('lastCodeId') || 0
+      this.loadCode(lastCodeId)
+    },
+
     newCode() {
       if (this.id !== 0) Message.success('成功创建新代码片段')
       this.clearMessages()
