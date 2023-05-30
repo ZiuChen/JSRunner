@@ -4,10 +4,10 @@
       width="80%"
       :visible="visible"
       ok-text="保存"
+      @open="handleDrawerOpen"
+      @close="handleDrawerClose"
       @ok="handleOk"
       @cancel="handleCancel"
-      @open="handleDrawerOpen"
-      @keydown="handleDrawerKeydown"
     >
       <template #title> 快捷脚本 </template>
       <div class="title">
@@ -61,6 +61,11 @@ function handleDrawerKeydown(ev: KeyboardEvent) {
 
 function handleDrawerOpen() {
   inputRef.value?.focus() // focus input, ESC will close drawer
+  document.addEventListener('keydown', handleDrawerKeydown)
+}
+
+function handleDrawerClose() {
+  document.removeEventListener('keydown', handleDrawerKeydown)
 }
 
 function handleOk() {
