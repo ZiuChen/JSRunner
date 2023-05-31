@@ -10,7 +10,7 @@
       @cancel="handleCancel"
       unmount-on-close
     >
-      <template #title> 快捷脚本 </template>
+      <template #title> 新建快捷脚本 </template>
       <div class="title">
         <img class="logo" :src="store.logo" @click="handleLogoClick" alt="logo" draggable="false" />
         <div class="input-field">
@@ -34,7 +34,11 @@
         </div>
       </div>
       <a-divider />
-      <a-button type="text" v-if="!store.isEditorVisible" @click="store.setFeatureVisible(true)">
+      <a-button
+        type="text"
+        v-if="isElectron && !store.isEditorVisible"
+        @click="store.setFeatureVisible(true)"
+      >
         编辑关键字
         <template #icon>
           <icon-edit />
@@ -55,8 +59,8 @@
 </template>
 
 <script setup lang="ts">
-import { useScriptStore } from '@/store'
-import { openLink } from '@/utils'
+import { useScriptStore, useCodeStore } from '@/store'
+import { isElectron, openLink } from '@/utils'
 
 defineProps<{
   visible: boolean
@@ -64,6 +68,7 @@ defineProps<{
 
 const emit = defineEmits(['close'])
 const store = useScriptStore()
+const codeStore = useCodeStore()
 
 function handleDrawerKeydown(ev: KeyboardEvent) {
   if (ev.key === 'Escape') {
@@ -81,8 +86,7 @@ function handleDrawerClose() {
 }
 
 function handleOk() {
-  store.saveScript()
-  emit('close')
+  store.newScript(codeStore.code) ? emit('close') : null
 }
 
 function handleCancel() {

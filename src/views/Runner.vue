@@ -48,7 +48,7 @@
           @run-code="store.execCode"
           @new-code="store.newCode"
           @clear-messages="store.clearMessages"
-          @save-feature="featureVisible = true"
+          @save-script="featureVisible = true"
         />
       </template>
       <template #second>
