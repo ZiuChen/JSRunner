@@ -9,7 +9,11 @@ import {
   IconSettings,
   IconCloseCircle,
   IconDown,
-  IconEdit
+  IconEdit,
+  IconCommand,
+  IconEye,
+  IconDelete,
+  IconShareAlt
 } from '@arco-design/web-vue/es/icon'
 
 const icons = [
@@ -22,7 +26,11 @@ const icons = [
   IconSettings,
   IconCloseCircle,
   IconDown,
-  IconEdit
+  IconEdit,
+  IconCommand,
+  IconEye,
+  IconDelete,
+  IconShareAlt
 ]
 
 export function registerIcon(app: App) {

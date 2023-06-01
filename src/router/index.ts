@@ -12,6 +12,10 @@ export default createRouter({
       component: () => import('@/views/Runner.vue')
     },
     {
+      path: '/scripts',
+      component: () => import('@/views/Scripts.vue')
+    },
+    {
       path: '/setting',
       component: () => import('@/views/Setting.vue')
     },

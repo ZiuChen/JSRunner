@@ -11,6 +11,8 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     ABadge: typeof import('@arco-design/web-vue')['Badge']
     AButton: typeof import('@arco-design/web-vue')['Button']
+    ACard: typeof import('@arco-design/web-vue')['Card']
+    ACol: typeof import('@arco-design/web-vue')['Col']
     ADivider: typeof import('@arco-design/web-vue')['Divider']
     ADoption: typeof import('@arco-design/web-vue')['Doption']
     ADrawer: typeof import('@arco-design/web-vue')['Drawer']
@@ -19,6 +21,7 @@ declare module '@vue/runtime-core' {
     ALink: typeof import('@arco-design/web-vue')['Link']
     ARadio: typeof import('@arco-design/web-vue')['Radio']
     ARadioGroup: typeof import('@arco-design/web-vue')['RadioGroup']
+    ARow: typeof import('@arco-design/web-vue')['Row']
     ASplit: typeof import('@arco-design/web-vue')['Split']
     ATextarea: typeof import('@arco-design/web-vue')['Textarea']
     ATooltip: typeof import('@arco-design/web-vue')['Tooltip']

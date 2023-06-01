@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import type { setFeature } from 'utools-api-types'
 import { Message } from '@arco-design/web-vue'
+import { parse } from 'comment-parser'
 import { isElectron, setItem, generateRandomString } from '@/utils'
 
 export interface ScriptState {
@@ -54,6 +55,25 @@ export const useScriptStore = defineStore('script', {
       Message.success('保存成功')
 
       return true
+    },
+
+    parseCommentBlock(code: string) {
+      const parsed = parse(code)
+      if (parsed.length) {
+        // 只解析第一个注释块
+        // name 优先从首行获取 否则从 @name 获取
+        // description 从 @description 获取
+        const commentInfo = parsed[0].tags.map((tag) => ({
+          name: parsed[0].description
+            ? parsed[0].description
+            : tag.tag === 'name'
+            ? [tag.name, tag.description].join(' ')
+            : '',
+          description: tag.tag === 'description' ? [tag.name, tag.description].join(' ') : ''
+        }))[0]
+
+        this.$patch(commentInfo)
+      }
     }
   }
 })

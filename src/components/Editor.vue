@@ -1,7 +1,5 @@
 <template>
-  <div class="editor">
-    <div class="instance" ref="editorRef"></div>
-  </div>
+  <div class="editor" ref="editorRef"></div>
 </template>
 
 <script setup lang="ts">
@@ -31,6 +29,13 @@ let editor: monaco.editor.IStandaloneCodeEditor | null = null
 watch(
   () => settingStore.isDark,
   () => initEditor()
+)
+
+watch(
+  () => props.code,
+  (val) => {
+    if (editor && val !== editor?.getValue()) editor.setValue(val)
+  }
 )
 
 onMounted(() => {
@@ -81,8 +86,8 @@ function initEditor() {
 </script>
 
 <style lang="less" scoped>
-.instance {
-  height: calc(100vh - 32px);
+.editor {
+  height: 100%;
   width: 100%;
 }
 </style>

@@ -27,7 +27,10 @@ export function removeItem(key: string) {
 
 export function allDocs(key?: string) {
   if (isElectron) {
-    return utools.db.allDocs(key)
+    return utools.db.allDocs(key).map((db) => ({
+      ...db,
+      data: db.data || db.value
+    }))
   } else {
     const res = []
     for (let i = 0; i < localStorage.length; i++) {

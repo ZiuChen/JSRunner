@@ -4,6 +4,7 @@
       width="80%"
       :visible="visible"
       ok-text="保存"
+      @before-open="handleDrawerBeforeOpen"
       @open="handleDrawerOpen"
       @close="handleDrawerClose"
       @ok="handleOk"
@@ -17,7 +18,7 @@
           <a-input
             class="name"
             v-model="store.name"
-            :max-length="50"
+            :max-length="25"
             placeholder="请输入脚本名称"
             allow-clear
             show-word-limit
@@ -25,7 +26,7 @@
           <a-textarea
             class="description"
             v-model="store.description"
-            :max-length="100"
+            :max-length="50"
             placeholder="请输入脚本描述"
             auto-size
             allow-clear
@@ -77,7 +78,12 @@ function handleDrawerKeydown(ev: KeyboardEvent) {
   }
 }
 
+function handleDrawerBeforeOpen() {
+  store.$reset() // 每次打开抽屉都重置数据
+}
+
 function handleDrawerOpen() {
+  store.parseCommentBlock(codeStore.code)
   document.addEventListener('keydown', handleDrawerKeydown)
 }
 
