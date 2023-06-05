@@ -1,5 +1,5 @@
 <template>
-  <div class="feature">
+  <div class="script-panel">
     <a-drawer
       width="80%"
       :visible="visible"

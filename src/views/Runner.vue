@@ -58,7 +58,7 @@
         <Console :messages="store.messages" />
       </template>
     </a-split>
-    <Feature :visible="featureVisible" @close="handleFeatureClose" />
+    <ScriptPanel :visible="featureVisible" @close="handleFeatureClose" />
   </div>
 </template>
 

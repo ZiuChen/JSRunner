@@ -9,19 +9,11 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    ABadge: typeof import('@arco-design/web-vue')['Badge']
     AButton: typeof import('@arco-design/web-vue')['Button']
-    ACard: typeof import('@arco-design/web-vue')['Card']
-    ACol: typeof import('@arco-design/web-vue')['Col']
-    ADivider: typeof import('@arco-design/web-vue')['Divider']
     ADoption: typeof import('@arco-design/web-vue')['Doption']
     ADrawer: typeof import('@arco-design/web-vue')['Drawer']
     ADropdown: typeof import('@arco-design/web-vue')['Dropdown']
     AInput: typeof import('@arco-design/web-vue')['Input']
-    ALink: typeof import('@arco-design/web-vue')['Link']
-    ARadio: typeof import('@arco-design/web-vue')['Radio']
-    ARadioGroup: typeof import('@arco-design/web-vue')['RadioGroup']
-    ARow: typeof import('@arco-design/web-vue')['Row']
     ASplit: typeof import('@arco-design/web-vue')['Split']
     ATextarea: typeof import('@arco-design/web-vue')['Textarea']
     ATooltip: typeof import('@arco-design/web-vue')['Tooltip']
@@ -30,6 +22,7 @@ declare module '@vue/runtime-core' {
     Feature: typeof import('./src/components/Feature.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    ScriptPanel: typeof import('./src/components/ScriptPanel.vue')['default']
     SelectList: typeof import('./src/components/SelectList.vue')['default']
     SettingContent: typeof import('./src/components/SettingContent.vue')['default']
     ShortCut: typeof import('./src/components/ShortCut.vue')['default']
