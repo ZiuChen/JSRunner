@@ -30,6 +30,7 @@ declare module '@vue/runtime-core' {
     Feature: typeof import('./src/components/Feature.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SelectList: typeof import('./src/components/SelectList.vue')['default']
     SettingContent: typeof import('./src/components/SettingContent.vue')['default']
     ShortCut: typeof import('./src/components/ShortCut.vue')['default']
     ThemeSetting: typeof import('./src/components/ThemeSetting.vue')['default']

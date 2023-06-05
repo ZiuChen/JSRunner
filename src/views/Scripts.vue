@@ -1,26 +1,22 @@
 <template>
   <div class="scripts">
-    <a-row>
-      <template v-for="s of scripts" :key="s.id">
-        <a-col :span="12">
-          <a-card class="script" hoverable>
-            <div class="script__content">
-              <img class="script__logo" :src="s.logo || 'logo.png'" alt="logo" draggable="false" />
-              <div class="script__info">
-                <span class="script__name" :title="s.name">{{ s.name }}</span>
-                <span class="script__description" :title="s.description">{{ s.description }}</span>
-              </div>
-            </div>
-            <div class="script__actions">
-              <span class="icon-hover"><icon-eye :size="actionIconSize" /></span>
-              <span class="icon-hover"><icon-edit :size="actionIconSize" /></span>
-              <span class="icon-hover"><icon-delete :size="actionIconSize" /></span>
-              <span class="icon-hover"><icon-share-alt :size="actionIconSize" /></span>
-            </div>
-          </a-card>
-        </a-col>
-      </template>
-    </a-row>
+    <template v-for="s of scripts" :key="s.id">
+      <a-card class="script" hoverable>
+        <div class="script__content">
+          <img class="script__logo" :src="s.logo || 'logo.png'" alt="logo" draggable="false" />
+          <div class="script__info">
+            <span class="script__name" :title="s.name">{{ s.name }}</span>
+            <span class="script__description" :title="s.description">{{ s.description }}</span>
+          </div>
+        </div>
+        <div class="script__actions">
+          <span class="icon-hover"><icon-eye :size="actionIconSize" /></span>
+          <span class="icon-hover"><icon-edit :size="actionIconSize" /></span>
+          <span class="icon-hover"><icon-delete :size="actionIconSize" /></span>
+          <span class="icon-hover"><icon-share-alt :size="actionIconSize" /></span>
+        </div>
+      </a-card>
+    </template>
     <BackButton />
   </div>
 </template>
