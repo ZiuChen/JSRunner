@@ -45,12 +45,14 @@ export const useCodeStore = defineStore('CodeSrore', {
   actions: {
     init() {
       const lastCodeId = getItem('lastCodeId') || 0
-      this.loadCode(lastCodeId)
       this.loadHistorys()
+      this.loadCode(lastCodeId)
     },
 
     newCode() {
       if (this.id !== 0) Message.success('成功创建新代码片段')
+      if (this.historys.length === 99)
+        return Message.error('创建失败 代码历史已达到上限 请删除部分代码历史后继续操作')
       this.clearMessages()
       this.id = new Date().getTime()
       this.code = getItem('lastCodeId') ? '' : 'console.log("Hello, World!")'
@@ -99,8 +101,8 @@ export const useCodeStore = defineStore('CodeSrore', {
       // newest at first
       res.sort((a: any, b: any) => parseInt(a._id.split('/')[1]) - parseInt(b._id.split('/')[1]))
 
-      // restrict historys length: 50
-      const rm = res.splice(0, res.length - 50)
+      // restrict historys length
+      const rm = res.splice(0, res.length - 99)
       rm.forEach((item: any) => removeItem(item._id))
 
       this.historys = res.map((item: any) => {

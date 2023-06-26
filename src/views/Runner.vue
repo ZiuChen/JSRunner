@@ -22,7 +22,7 @@
         :popup-max-height="false"
         @popup-visible-change="(v) => v && store.loadHistorys()"
       >
-        <a-button class="flex-fill">代码历史回溯 ({{ store.historys.length }}/50)</a-button>
+        <a-button class="flex-fill">代码历史回溯 ({{ store.historys.length }}/99)</a-button>
         <template #content>
           <template v-for="history of store.historys">
             <a-doption
