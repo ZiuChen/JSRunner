@@ -14,7 +14,7 @@ declare global {
 
 const empty = () => null
 
-export const electron = window.preload.electron || {}
-export const Buffer = window.preload.Buffer || {}
-export const require = window.preload.require || empty
-export const vm = window.preload.vm || {}
+export const electron = window?.preload?.electron || {}
+export const Buffer = window?.preload?.Buffer || {}
+export const require = window?.preload?.require || empty
+export const vm = window?.preload?.vm || {}
