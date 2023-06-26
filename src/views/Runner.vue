@@ -16,9 +16,6 @@
       <a-tooltip content="关于">
         <a-button @click="$router.push('/about')"><icon-info-circle /></a-button>
       </a-tooltip>
-      <a-tooltip content="快捷脚本">
-        <a-button @click="$router.push('/scripts')"><icon-command /></a-button>
-      </a-tooltip>
       <a-button class="width-80" @click="store.changeEnv">{{ store.currentEnv }}</a-button>
       <a-button class="width-80" @click="store.changeMode">{{ store.currentMode }}</a-button>
       <a-dropdown
