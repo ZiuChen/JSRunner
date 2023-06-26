@@ -114,11 +114,15 @@ export const useCodeStore = defineStore('CodeSrore', {
           .slice(1)
           .slice(0, -1)
 
+        const name =
+          parseCommentBlock(plainCode)?.name ||
+          (plainCode.startsWith('//') ? plainCode.split('\n')[0].slice(2).trim() : '')
+
         return {
           id: item._id,
           timeStamp: parseInt(item._id.split('/')[1], 10),
           code: item.data,
-          name: parseCommentBlock(plainCode)?.name
+          name
         }
       })
     },
