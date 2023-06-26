@@ -3,12 +3,18 @@ import '@/style/index.less'
 import App from './App.vue'
 import router from './router'
 import { createPinia } from 'pinia'
+import { registerDirectives } from '@/common/directives'
 import { registerIcon } from '@/common/registerIcon'
 import { registerCallback } from '@/common/registerCallback'
 import { isElectron, SERVER_DEV } from './utils'
 
 try {
-  createApp(App).use(router).use(createPinia()).use(registerIcon).mount('#app')
+  createApp(App)
+    .use(router)
+    .use(createPinia())
+    .use(registerDirectives)
+    .use(registerIcon)
+    .mount('#app')
 
   registerCallback()
 } catch (error) {

@@ -21,6 +21,7 @@ export interface ICodeStoreState {
   env: 'node' | 'browser'
   historys: { id: string; timeStamp: number; code: string; name?: string }[]
   mode: 'ontime' | 'manual'
+  execState: boolean
 }
 
 export interface ICodeStore extends ReturnType<typeof useCodeStore> {}
@@ -33,7 +34,8 @@ export const useCodeStore = defineStore('CodeSrore', {
       messages: [] as IMessage[],
       env: isElectron ? getItem('env') || 'node' : 'browser',
       historys: [],
-      mode: getItem('mode') || 'ontime'
+      mode: getItem('mode') || 'ontime',
+      execState: false
     } as ICodeStoreState),
   getters: {
     codeWithId: (state) => `code/${state.id}`,
@@ -44,6 +46,7 @@ export const useCodeStore = defineStore('CodeSrore', {
     init() {
       const lastCodeId = getItem('lastCodeId') || 0
       this.loadCode(lastCodeId)
+      this.loadHistorys()
     },
 
     newCode() {
@@ -154,6 +157,12 @@ export const useCodeStore = defineStore('CodeSrore', {
         this.env === 'browser'
           ? runCodeInBrowser(this.code, handleConsole)
           : runCodeInSandbox(this.code, handleConsole)
+
+        // side effect
+        this.execState = true
+        setTimeout(() => {
+          this.execState = false
+        })
       },
       350,
       { leading: true }

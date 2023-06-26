@@ -5,7 +5,7 @@
         <a-button @click="store.newCode"><icon-plus></icon-plus></a-button>
       </a-tooltip>
       <a-tooltip content="运行代码">
-        <a-button @click="store.execCode"><icon-thunderbolt /></a-button>
+        <a-button @click="store.execCode"><icon-thunderbolt v-zoom="store.execState" /></a-button>
       </a-tooltip>
       <a-tooltip content="清空控制台">
         <a-button @click="store.clearMessages"><icon-stop /></a-button>
