@@ -157,5 +157,22 @@ monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
   allowJs: true
 })
 
+monaco.languages.registerCompletionItemProvider('javascript', {
+  // @ts-ignore
+  provideCompletionItems: function () {
+    return {
+      suggestions: [
+        {
+          label: 'clg',
+          kind: monaco.languages.CompletionItemKind.Snippet,
+          insertText: 'console.log(${1})',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          documentation: 'Print to Console'
+        }
+      ]
+    }
+  }
+})
+
 export { monaco }
 export * from './addActions'
