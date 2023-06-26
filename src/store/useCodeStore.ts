@@ -126,6 +126,13 @@ export const useCodeStore = defineStore('CodeSrore', {
       setItem('lastCodeId', this.id)
     },
 
+    deleteHistory(timeStamp: number) {
+      const idx = this.historys.findIndex((h) => h.timeStamp === timeStamp)
+      this.historys.splice(idx, 1)
+      removeItem(`code/${timeStamp}`)
+      Message.success('删除成功')
+    },
+
     emptyHistory() {
       this.historys = this.historys.filter((item) => {
         item.id === this.codeWithId

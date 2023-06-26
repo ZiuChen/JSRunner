@@ -22,7 +22,7 @@
         :popup-max-height="false"
         @popup-visible-change="(v) => v && store.loadHistorys()"
       >
-        <a-button class="flex-fill">代码历史回溯</a-button>
+        <a-button class="flex-fill">代码历史回溯 ({{ store.historys.length }}/50)</a-button>
         <template #content>
           <template v-for="history of store.historys">
             <a-doption
@@ -32,7 +32,18 @@
               <template #icon>
                 <icon-file />
               </template>
-              {{ history?.name || formatTime(history.timeStamp) }}
+              {{
+                history?.name
+                  ? `${history?.name} ${formatTime(history.timeStamp)}`
+                  : formatTime(history.timeStamp)
+              }}
+              <span
+                class="history-delete"
+                v-if="history.id !== store.codeWithId"
+                @click.stop="store.deleteHistory(history.timeStamp)"
+              >
+                <icon-delete />
+              </span>
             </a-doption>
           </template>
         </template>
@@ -89,6 +100,16 @@ watch(size, (val) => setItem('size', val))
   }
   .width-80 {
     width: 80px;
+  }
+}
+.arco-dropdown-option {
+  display: flex;
+  justify-content: space-between;
+}
+.history-delete {
+  margin-left: 10px;
+  :hover {
+    color: var(--color-danger-light-4);
   }
 }
 .active-option {
