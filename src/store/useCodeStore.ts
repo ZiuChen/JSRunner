@@ -7,7 +7,8 @@ import {
   runCodeInBrowser,
   allDocs,
   isElectron,
-  classof
+  classof,
+  parseCommentBlock
 } from '@/utils'
 import { IMessage } from '@/components/Console.vue'
 import { uniqueId, throttle } from 'lodash-es'
@@ -18,7 +19,7 @@ export interface ICodeStoreState {
   code: string
   messages: IMessage[]
   env: 'node' | 'browser'
-  historys: { id: string; timeStamp: number; code: string }[]
+  historys: { id: string; timeStamp: number; code: string; name?: string }[]
   mode: 'ontime' | 'manual'
 }
 
@@ -95,15 +96,26 @@ export const useCodeStore = defineStore('CodeSrore', {
       // newest at first
       res.sort((a: any, b: any) => parseInt(a._id.split('/')[1]) - parseInt(b._id.split('/')[1]))
 
-      // restrict historys length: 25
-      const rm = res.splice(0, res.length - 25)
+      // restrict historys length: 50
+      const rm = res.splice(0, res.length - 50)
       rm.forEach((item: any) => removeItem(item._id))
 
-      this.historys = res.map((item: any) => ({
-        id: item._id,
-        timeStamp: parseInt(item._id.split('/')[1]),
-        code: item.data
-      }))
+      this.historys = res.map((item: any) => {
+        // clear escape character in item.data and remove `"` at the beginning and end
+        const plainCode = item.data
+          .replace(/\\n/g, '\n')
+          .replace(/\\r/g, '\r')
+          .replace(/\\t/g, '\t')
+          .slice(1)
+          .slice(0, -1)
+
+        return {
+          id: item._id,
+          timeStamp: parseInt(item._id.split('/')[1], 10),
+          code: item.data,
+          name: parseCommentBlock(plainCode)?.name
+        }
+      })
     },
 
     readHistory(timeStamp: number) {

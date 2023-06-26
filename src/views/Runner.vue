@@ -21,8 +21,11 @@
       </a-tooltip>
       <a-button class="width-80" @click="store.changeEnv">{{ store.currentEnv }}</a-button>
       <a-button class="width-80" @click="store.changeMode">{{ store.currentMode }}</a-button>
-      <a-dropdown :popup-max-height="false">
-        <a-button class="flex-fill" @click="store.loadHistorys">代码历史回溯</a-button>
+      <a-dropdown
+        :popup-max-height="false"
+        @popup-visible-change="(v) => v && store.loadHistorys()"
+      >
+        <a-button class="flex-fill">代码历史回溯</a-button>
         <template #content>
           <template v-for="history of store.historys">
             <a-doption
@@ -32,7 +35,7 @@
               <template #icon>
                 <icon-file />
               </template>
-              {{ formatTime(history.timeStamp) }}
+              {{ history?.name || formatTime(history.timeStamp) }}
             </a-doption>
           </template>
         </template>
@@ -51,14 +54,12 @@
           @run-code="store.execCode"
           @new-code="store.newCode"
           @clear-messages="store.clearMessages"
-          @save-script="featureVisible = true"
         />
       </template>
       <template #second>
         <Console :messages="store.messages" />
       </template>
     </a-split>
-    <ScriptPanel :visible="featureVisible" @close="handleFeatureClose" />
   </div>
 </template>
 
@@ -68,17 +69,11 @@ import { setItem, getItem, formatTime } from '@/utils'
 
 const editorRef = ref()
 const size = ref(getItem('size') || 0.75)
-const featureVisible = ref(false)
 const store = useCodeStore()
 
 store.init()
 
 watch(size, (val) => setItem('size', val))
-
-function handleFeatureClose() {
-  featureVisible.value = false
-  editorRef.value.editor.focus()
-}
 </script>
 
 <style lang="less" scoped>
