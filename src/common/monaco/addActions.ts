@@ -28,12 +28,4 @@ export function addActions(
     contextMenuGroupId: 'navigation',
     run: () => emit('clearMessages')
   })
-
-  editor.addAction({
-    id: 'saveScript',
-    label: 'Save Script',
-    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS],
-    contextMenuGroupId: 'navigation',
-    run: () => emit('saveScript')
-  })
 }

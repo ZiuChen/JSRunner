@@ -1,8 +1,7 @@
 import { defineStore } from 'pinia'
 import type { setFeature } from 'utools-api-types'
 import { Message } from '@arco-design/web-vue'
-import { parse } from 'comment-parser'
-import { setItem, generateRandomString } from '@/utils'
+import { setItem, generateRandomString, parseCommentBlock } from '@/utils'
 
 export interface ScriptState {
   name: string
@@ -34,27 +33,8 @@ export const useScriptStore = defineStore('script', {
     },
 
     parseCommentBlock(code: string) {
-      const parsed = parse(code)
-      if (parsed.length) {
-        // 只解析第一个注释块 首行默认作为 name
-        // name 优先从首行获取 否则从 @name 获取
-        // description 从 @description 获取
-        const block = parsed[0]
-        const commentInfo = block.tags.length
-          ? block.tags.map((tag) => ({
-              name: block.description
-                ? block.description
-                : tag.tag === 'name'
-                ? [tag.name, tag.description].join(' ')
-                : '',
-              description: tag.tag === 'description' ? [tag.name, tag.description].join(' ') : ''
-            }))[0]
-          : {
-              name: block.description || ''
-            }
-
-        this.$patch(commentInfo)
-      }
+      const commentInfo = parseCommentBlock(code)
+      this.$patch(commentInfo || {})
     }
   }
 })

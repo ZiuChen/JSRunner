@@ -3,10 +3,12 @@
     <template v-for="s of scripts" :key="s.id">
       <a-card class="script" hoverable>
         <div class="script__content">
-          <img class="script__logo" :src="s.logo || 'logo.png'" alt="logo" draggable="false" />
           <div class="script__info">
             <span class="script__name" :title="s.name">{{ s.name }}</span>
             <span class="script__description" :title="s.description">{{ s.description }}</span>
+          </div>
+          <div class="script__code">
+            {{ s.code }}
           </div>
         </div>
         <div class="script__actions">
@@ -55,17 +57,17 @@ const { BackButton } = usePageBack()
 }
 .script__content {
   display: flex;
-  align-items: center;
-}
-.script__logo {
-  height: 50px;
-  width: 50px;
-  object-fit: cover;
+  margin-left: 10px;
 }
 .script__info {
   display: flex;
   flex-direction: column;
-  margin-left: 10px;
+  flex: 1;
+}
+.script__code {
+  flex: 2;
+  overflow: hidden;
+  word-wrap: break-word;
 }
 .script__name {
   font-size: 16px;
@@ -78,7 +80,6 @@ const { BackButton } = usePageBack()
 }
 .script__actions {
   display: flex;
-  justify-content: flex-end;
   margin-top: 10px;
 }
 .icon-hover {

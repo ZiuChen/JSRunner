@@ -29,12 +29,25 @@
         allow-clear
         show-word-limit
       />
+      <a-input-tag
+        :default-value="['test']"
+        :style="{ width: '320px' }"
+        placeholder="Please Enter"
+        allow-clear
+      />
+      <template v-if="isElectron">
+        <div>
+          启用全局搜索
+          <a-switch />
+        </div>
+      </template>
     </a-drawer>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useScriptStore, useCodeStore } from '@/store'
+import { isElectron } from '@/utils'
 
 defineProps<{
   visible: boolean
@@ -56,7 +69,6 @@ function handleDrawerBeforeOpen() {
 }
 
 function handleDrawerOpen() {
-  console.log('handleDrawerOpen')
   store.parseCommentBlock(codeStore.code)
   document.addEventListener('keydown', handleDrawerKeydown)
 }
