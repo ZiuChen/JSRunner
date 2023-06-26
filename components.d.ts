@@ -9,9 +9,13 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    ABadge: typeof import('@arco-design/web-vue')['Badge']
     AButton: typeof import('@arco-design/web-vue')['Button']
     ADoption: typeof import('@arco-design/web-vue')['Doption']
     ADropdown: typeof import('@arco-design/web-vue')['Dropdown']
+    ALink: typeof import('@arco-design/web-vue')['Link']
+    ARadio: typeof import('@arco-design/web-vue')['Radio']
+    ARadioGroup: typeof import('@arco-design/web-vue')['RadioGroup']
     ASplit: typeof import('@arco-design/web-vue')['Split']
     ATooltip: typeof import('@arco-design/web-vue')['Tooltip']
     Console: typeof import('./src/components/Console.vue')['default']
