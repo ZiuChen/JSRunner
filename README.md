@@ -8,7 +8,9 @@
 - ✅ Run JavaScript code to quickly verify code logic
 - ✅ Support switching NodeJS/browser operating environment
 - ✅ `Ctrl/Command+R` Quickly run code
-- ✅ Support code backtracking, record code running history in real time
+- ✅ `Ctrl/Command+Q` Clear the console
+- ✅ `Ctrl/Command+N` Create new code snippet
+- ✅ Support backtracking code history. Support saving/editing code running history
 - ✅ Support manually triggering code execution/running code in real time
 - ✅ Support top-level await. Adapt to dark mode
 
