@@ -45,8 +45,8 @@ export const useCodeStore = defineStore('CodeSrore', {
   actions: {
     init() {
       const lastCodeId = getItem('lastCodeId') || 0
-      this.loadHistorys()
       this.loadCode(lastCodeId)
+      this.loadHistorys()
     },
 
     newCode() {
@@ -58,6 +58,7 @@ export const useCodeStore = defineStore('CodeSrore', {
       this.code = getItem('lastCodeId') ? '' : 'console.log("Hello, World!")'
       setItem(this.codeWithId, this.code)
       setItem('lastCodeId', this.id)
+      this.loadHistorys()
     },
 
     loadCode(id: number) {
