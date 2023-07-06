@@ -3,10 +3,11 @@
 </template>
 
 <script setup lang="ts">
-import { monaco } from '@/common/monaco'
 import { debounce } from 'lodash-es'
+import { monaco, addActions } from '@/common/monaco'
+import { EVENT_ON_PLUGIN_ENTER } from '@/common/customEvent'
 import { useSettingStore } from '@/store'
-import { addActions } from '@/common/monaco'
+import { useEventListener } from '@/hooks/useEventListener'
 
 const settingStore = useSettingStore()
 
@@ -48,6 +49,15 @@ onUnmounted(() => {
 
 defineExpose({
   editor: computed(() => editor)
+})
+
+// 自动聚焦编辑器
+useEventListener(window, EVENT_ON_PLUGIN_ENTER.type, () => {
+  editor?.focus()
+})
+
+useEventListener(window, 'focus', () => {
+  editor?.focus()
 })
 
 /**
