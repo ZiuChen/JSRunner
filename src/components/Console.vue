@@ -15,14 +15,28 @@
             'message-info': item.type === 'info'
           }"
         >
-          <a-button
-            class="time-status"
-            size="mini"
-            type="text"
-            @click="handleCopyClick(item.timeStamp)"
-          >
-            {{ formatTime(item.timeStamp).split(' ')[1] }}
-          </a-button>
+          <a-tooltip content="复制时间戳">
+            <a-button
+              class="status"
+              size="mini"
+              type="text"
+              @click="handleCopyClick(item.timeStamp)"
+            >
+              {{ formatTime(item.timeStamp).split(' ')[1] }}
+            </a-button>
+          </a-tooltip>
+          <a-tooltip content="JSON编辑器">
+            <a-button
+              class="status"
+              size="mini"
+              type="text"
+              status="warning"
+              v-if="isElectron && ['Array', 'Object'].includes(classof(item.content[0]))"
+              @click="handleRedirectClick(item.content[0])"
+            >
+              JSON
+            </a-button>
+          </a-tooltip>
           <div class="content" @click="handleCopyClick(getMessageContent(item.content))">
             {{ getMessageContent(item.content) }}
           </div>
@@ -33,9 +47,8 @@
 </template>
 
 <script setup lang="ts">
-import { toRaw } from 'vue'
 import { Message } from '@arco-design/web-vue'
-import { formatTime, copyText, classof } from '@/utils'
+import { formatTime, copyText, classof, isElectron } from '@/utils'
 
 export interface PropsType {
   messages: IMessage[]
@@ -68,6 +81,7 @@ watch(
 )
 
 function getMessageContent(content: (typeof props.messages)[number]['content']) {
+  console.log(content)
   return toRaw(content)
     .map((item) => {
       const c = classof(item)
@@ -106,6 +120,11 @@ function handleCopyClick(text: string | number) {
   const res = copyText(String(text))
   res ? Message.success('复制成功') : Message.error('复制失败')
 }
+
+function handleRedirectClick(jsonObj: any) {
+  if (!isElectron) return
+  utools.redirect('Json', JSON.stringify(jsonObj))
+}
 </script>
 
 <style lang="less" scoped>
@@ -126,7 +145,7 @@ function handleCopyClick(text: string | number) {
   padding: 5px;
   .scrollbar();
 
-  .time-status {
+  .status {
     padding: 0;
   }
   .content {
