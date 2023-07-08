@@ -138,6 +138,9 @@ export const useCodeStore = defineStore('CodeSrore', {
       this.historys.splice(idx, 1)
       removeItem(`code/${timeStamp}`)
       Message.success('删除成功')
+
+      // 选中第一条历史记录 or 新建代码片段
+      this.historys.length ? this.readHistory(this.historys[0].timeStamp) : this.newCode()
     },
 
     emptyHistory() {

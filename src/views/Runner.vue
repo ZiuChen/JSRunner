@@ -37,11 +37,7 @@
                   ? `${history?.name} ${formatTime(history.timeStamp)}`
                   : formatTime(history.timeStamp)
               }}
-              <span
-                class="history-delete"
-                v-if="history.id !== store.codeWithId"
-                @click.stop="store.deleteHistory(history.timeStamp)"
-              >
+              <span class="history-delete" @click.stop="store.deleteHistory(history.timeStamp)">
                 <icon-delete />
               </span>
             </a-doption>
