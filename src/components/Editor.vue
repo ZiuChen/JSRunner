@@ -5,7 +5,7 @@
 <script setup lang="ts">
 import { debounce } from 'lodash-es'
 import { monaco, addActions } from '@/common/monaco'
-import { EVENT_ON_PLUGIN_ENTER } from '@/common/customEvent'
+import { EVENT_EDITOR_FOCUS } from '@/common/customEvent'
 import { useSettingStore } from '@/store'
 import { useEventListener } from '@/hooks/useEventListener'
 
@@ -52,7 +52,7 @@ defineExpose({
 })
 
 // 自动聚焦编辑器
-useEventListener(window, EVENT_ON_PLUGIN_ENTER.type, () => {
+useEventListener(window, EVENT_EDITOR_FOCUS.type, () => {
   editor?.focus()
 })
 

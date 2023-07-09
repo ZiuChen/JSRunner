@@ -1,1 +1,1 @@
-export const EVENT_ON_PLUGIN_ENTER = new CustomEvent('utools-on-plugin-enter')
+export const EVENT_EDITOR_FOCUS = new CustomEvent('editor-focus')

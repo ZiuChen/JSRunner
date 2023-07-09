@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import { EVENT_EDITOR_FOCUS } from '@/common/customEvent'
 
-export default createRouter({
+const router = createRouter({
   history: createWebHashHistory(),
   routes: [
     {
@@ -21,3 +22,11 @@ export default createRouter({
     }
   ]
 })
+
+router.afterEach((to, from, failure) => {
+  if (to.path === '/runner') {
+    nextTick(() => window.dispatchEvent(EVENT_EDITOR_FOCUS))
+  }
+})
+
+export default router
