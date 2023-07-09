@@ -100,7 +100,7 @@ export const useCodeStore = defineStore('CodeSrore', {
       if (!res || !res.length) return
 
       // newest at first
-      res.sort((a: any, b: any) => parseInt(a._id.split('/')[1]) - parseInt(b._id.split('/')[1]))
+      res.sort((a: any, b: any) => parseInt(b._id.split('/')[1]) - parseInt(a._id.split('/')[1]))
 
       // restrict historys length
       const rm = res.splice(0, res.length - 99)

@@ -18,10 +18,7 @@
       </a-tooltip>
       <a-button class="width-80" @click="store.changeEnv">{{ store.currentEnv }}</a-button>
       <a-button class="width-80" @click="store.changeMode">{{ store.currentMode }}</a-button>
-      <a-dropdown
-        :popup-max-height="false"
-        @popup-visible-change="(v) => v && store.loadHistorys()"
-      >
+      <a-dropdown @popup-visible-change="(v) => v && store.loadHistorys()">
         <a-button class="flex-fill">代码历史回溯 ({{ store.historys.length }}/99)</a-button>
         <template #content>
           <template v-for="history of store.historys">
