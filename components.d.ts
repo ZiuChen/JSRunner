@@ -26,7 +26,6 @@ declare module '@vue/runtime-core' {
     ARadioGroup: typeof import('@arco-design/web-vue')['RadioGroup']
     ARow: typeof import('@arco-design/web-vue')['Row']
     ASelect: typeof import('@arco-design/web-vue')['Select']
-    ASelectOption: typeof import('@arco-design/web-vue')['SelectOption']
     ASplit: typeof import('@arco-design/web-vue')['Split']
     ATextarea: typeof import('@arco-design/web-vue')['Textarea']
     ATooltip: typeof import('@arco-design/web-vue')['Tooltip']
@@ -37,6 +36,5 @@ declare module '@vue/runtime-core' {
     RouterView: typeof import('vue-router')['RouterView']
     SettingContent: typeof import('./src/components/SettingContent.vue')['default']
     ShortCut: typeof import('./src/components/ShortCut.vue')['default']
-    ThemeSetting: typeof import('./src/components/ThemeSetting.vue')['default']
   }
 }
