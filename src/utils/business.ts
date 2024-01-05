@@ -19,7 +19,12 @@ export async function runCodeInSandbox(
   }
   try {
     vm.createContext(context)
-    vm.runInContext(`(async function(){\n${code}\n})()`, context).catch((error: any) => {
+    vm.runInContext(
+      `(async function(){
+      ${code}
+    })()`,
+      context
+    ).catch((error: any) => {
       callback && callback(null, [error])
     })
   } catch (error: any) {
@@ -36,7 +41,9 @@ export function runCodeInBrowser(
       'console',
       'utools',
       'globalThis',
-      `(async function(){\ntry{${code}}catch(error){console.error(error)}\n})()`
+      `(async function(){\ntry{
+        ${code}
+      }catch(error){console.error(error)}\n})()`
     )
     const _globalThis = Object.assign({}, globalThis)
     // @ts-ignore
@@ -72,7 +79,6 @@ export function getuToolsLite() {
 
 export function parseCommentBlock(code: string) {
   const parsed = parse(code)
-  console.log('code', code)
   if (parsed.length) {
     // 只解析第一个注释块 首行默认作为 name
     // name 优先从首行获取 否则从 @name 获取

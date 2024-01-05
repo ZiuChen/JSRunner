@@ -29,29 +29,32 @@ export function allDocs(key?: string) {
   if (isElectron) {
     return utools.db.allDocs(key).map((db) => ({
       ...db,
-      data: db.data || db.value
+      value: JSON.parse(db.value)
     }))
-  } else {
-    const res = []
-    for (let i = 0; i < localStorage.length; i++) {
-      // 如果传入了key 则只返回包含key的数据
-      if (key) {
-        const _key = localStorage.key(i)
-        if (_key && _key.includes(key)) {
-          res.push({
-            _id: _key,
-            data: getItem(_key)
-          })
-        }
-        continue
-      }
+  }
 
-      // 否则返回所有数据
-      res.push({
-        _id: localStorage.key(i),
-        data: getItem(localStorage.key(i)!)
-      })
-    }
+  const res: { [x: string]: any; _id: string }[] = []
+
+  if (!localStorage.length) {
     return res
   }
+
+  for (let i = 0; i < localStorage.length; i++) {
+    const _id = localStorage.key(i)
+
+    // filter by key if key is provided
+    if (key && _id && !_id.startsWith(key)) {
+      continue
+    }
+
+    if (_id) {
+      const data = localStorage.getItem(_id)
+      res.push({
+        value: data ? JSON.parse(data) : null,
+        _id
+      })
+    }
+  }
+
+  return res
 }

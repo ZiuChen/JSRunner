@@ -1,49 +1,22 @@
 <template>
   <div class="runner">
     <div class="btns">
-      <a-tooltip content="创建新代码片段">
-        <a-button @click="store.newCode"><icon-plus></icon-plus></a-button>
-      </a-tooltip>
-      <a-tooltip content="运行代码">
-        <a-button @click="store.execCode"><icon-thunderbolt v-zoom="store.execState" /></a-button>
-      </a-tooltip>
-      <a-tooltip content="清空控制台">
-        <a-button @click="store.clearMessages"><icon-stop /></a-button>
-      </a-tooltip>
-      <a-tooltip content="设置">
-        <a-button @click="$router.push('/setting')"><icon-settings /></a-button>
-      </a-tooltip>
-      <a-tooltip content="关于">
-        <a-button @click="$router.push('/about')"><icon-info-circle /></a-button>
-      </a-tooltip>
+      <a-button @click="store.newCode"><icon-plus></icon-plus></a-button>
+      <a-button @click="store.execCode"><icon-thunderbolt v-zoom="store.execState" /></a-button>
+      <a-button @click="store.changeReadonly">
+        <icon-lock v-if="store.readonly" v-zoom="store.readonly"></icon-lock>
+        <icon-unlock v-else v-zoom="!store.readonly"></icon-unlock
+      ></a-button>
+      <a-button @click="$router.push('/setting')"><icon-settings /></a-button>
+      <a-button @click="$router.push('/about')"><icon-info-circle /></a-button>
+      <a-button @click="handleDeleteClick"><icon-delete /></a-button>
       <a-button class="width-80" @click="store.changeEnv">{{ store.currentEnv }}</a-button>
-      <a-button class="width-80" @click="store.changeMode">{{ store.currentMode }}</a-button>
-      <a-dropdown @popup-visible-change="(v) => v && store.loadHistorys()">
-        <a-button class="flex-fill">代码历史回溯 ({{ store.historys.length }}/99)</a-button>
-        <template #content>
-          <template v-for="history of store.historys">
-            <a-doption
-              :class="{ 'active-option': history.id === store.codeWithId }"
-              @click="store.readHistory(history.timeStamp)"
-            >
-              <template #icon>
-                <icon-file />
-              </template>
-              {{
-                history?.name
-                  ? `${history?.name} ${formatTime(history.timeStamp)}`
-                  : formatTime(history.timeStamp)
-              }}
-              <span class="history-delete" @click.stop="store.deleteHistory(history.timeStamp)">
-                <icon-delete />
-              </span>
-            </a-doption>
-          </template>
-        </template>
-        <template #footer>
-          <a-doption @click="store.emptyHistory">清空代码历史</a-doption>
-        </template>
-      </a-dropdown>
+      <a-button class="width-80" @click="store.changeMode">
+        {{ store.currentMode }}
+      </a-button>
+      <a-button @click="handleEditorAction('listHistory')" style="flex: 1">
+        代码历史回溯 ({{ history.historys.length }})
+      </a-button>
     </div>
     <a-split v-model:size="size" :min="0.1" :max="0.8">
       <template #first>
@@ -51,30 +24,96 @@
           ref="editorRef"
           :code="store.code"
           :language="'javascript'"
+          :readonly="store.readonly"
+          :debounce-interval="setting.codeChangeDebounce"
+          :indent-type="setting.indentType"
+          :indent-size="setting.indentSize"
           @code-change="store.handleCodeChange"
-          @run-code="store.execCode"
-          @new-code="store.newCode"
-          @clear-messages="store.clearMessages"
+          @action="handleEditorAction"
         />
       </template>
       <template #second>
-        <Console :messages="store.messages" />
+        <a-dropdown :trigger="['contextMenu']" alignPoint>
+          <Console :messages="store.messages" @action="handleEditorAction" />
+          <template #content>
+            <a-doption @click="store.clearConsole"> 清空控制台 </a-doption>
+          </template>
+        </a-dropdown>
       </template>
     </a-split>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useCodeStore } from '@/store'
-import { setItem, getItem, formatTime } from '@/utils'
+import { useCodeStore, useSettingStore } from '@/store'
+import { setItem, getItem } from '@/utils'
+import Editor, { EditorAction } from '@/components/Editor.vue'
+import Console from '@/components/Console.vue'
+import { useHistoryStore } from '@/store/useHistoryStore'
+import { Modal } from '@arco-design/web-vue'
 
-const editorRef = ref()
+const editorRef = ref<InstanceType<typeof Editor> | null>(null)
 const size = ref(getItem('size') || 0.75)
 const store = useCodeStore()
+const setting = useSettingStore()
+const history = useHistoryStore()
 
 store.init()
 
 watch(size, (val) => setItem('size', val))
+
+function handleDeleteClick() {
+  Modal.confirm({
+    title: '确认删除',
+    content: '确认删除该历史记录？',
+    onOk: () => {
+      history.deleteHistory(store.id)
+    }
+  })
+}
+
+function handleEditorAction(action: EditorAction) {
+  switch (action) {
+    case 'runCode':
+      store.execCode()
+      break
+    case 'newCode':
+      store.newCode()
+      break
+    case 'clearConsole':
+      store.clearConsole()
+      break
+    case 'toggleReadonly':
+      store.changeReadonly()
+      break
+    case 'showCommands':
+      editorRef.value?.editor?.trigger('', 'editor.action.quickCommand', null)
+      break
+    case 'listHistory':
+      const list = history.historys.map((item) => ({
+        type: 'item',
+        id: item.timeStamp,
+        label: `${item.name || 'Untitled'} - ${new Date(item.timeStamp).toLocaleString()} - ${
+          item.code
+        }`
+      }))
+
+      editorRef.value?.editor?.focus()
+      editorRef.value?.editor?.trigger('', 'quickInput', {
+        list,
+        callback: (selected?: (typeof list)[0]) => {
+          if (selected) {
+            useCodeStore().loadCode(selected.id)
+          }
+        }
+      })
+      break
+    default:
+      const exhaustiveCheck: never = action
+      exhaustiveCheck
+      break
+  }
+}
 </script>
 
 <style lang="less" scoped>
@@ -82,35 +121,17 @@ watch(size, (val) => setItem('size', val))
 
 .arco-split {
   height: calc(100vh - 32px);
+
   :deep(.arco-split-pane) {
     .scrollbar();
   }
 }
+
 .btns {
   display: flex;
-  .flex-fill {
-    flex: 1;
-  }
+
   .width-80 {
     width: 80px;
-  }
-}
-.arco-dropdown-option {
-  display: flex;
-  justify-content: space-between;
-}
-.history-delete {
-  margin-left: 10px;
-  :hover {
-    color: var(--color-danger-light-4);
-  }
-}
-.active-option {
-  background-color: var(--color-primary-light-4);
-  color: var(--bg-color);
-  &:hover {
-    background-color: var(--color-primary-light-4);
-    color: var(--bg-color);
   }
 }
 </style>

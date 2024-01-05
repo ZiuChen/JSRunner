@@ -9,13 +9,13 @@
           :key="item.id"
           :class="{
             message: true,
-            'message-log': !item.type || item.type === 'log',
-            'message-warn': item.type === 'warn',
-            'message-error': item.type === 'error',
-            'message-info': item.type === 'info'
+            log: !item.type || item.type === 'log',
+            warn: item.type === 'warn',
+            error: item.type === 'error',
+            info: item.type === 'info'
           }"
         >
-          <a-tooltip content="复制时间戳">
+          <a-tooltip :content="item.timeStamp.toString()">
             <a-button
               class="status"
               size="mini"
@@ -25,19 +25,27 @@
               {{ formatTime(item.timeStamp).split(' ')[1] }}
             </a-button>
           </a-tooltip>
-          <a-tooltip content="JSON编辑器">
-            <a-button
-              class="status"
-              size="mini"
-              type="text"
-              status="warning"
-              v-if="isElectron && ['Array', 'Object'].includes(classof(item.content[0]))"
-              @click="handleRedirectClick(item.content[0])"
-            >
-              JSON
-            </a-button>
-          </a-tooltip>
-          <div class="content" @click="handleCopyClick(getMessageContent(item.content))">
+          <a-button
+            class="handler"
+            size="mini"
+            type="text"
+            status="success"
+            @click="handleCopyClick(getMessageContent(item.content))"
+          >
+            COPY
+          </a-button>
+          <a-button
+            class="handler"
+            size="mini"
+            type="text"
+            status="warning"
+            v-if="isElectron && ['Array', 'Object'].includes(classof(item.content[0]))"
+            @click="handleRedirectClick(item.content[0])"
+          >
+            JSON
+          </a-button>
+
+          <div class="content">
             {{ getMessageContent(item.content) }}
           </div>
         </div>
@@ -81,7 +89,6 @@ watch(
 )
 
 function getMessageContent(content: (typeof props.messages)[number]['content']) {
-  console.log(content)
   return toRaw(content)
     .map((item) => {
       const c = classof(item)
@@ -129,40 +136,49 @@ function handleRedirectClick(jsonObj: any) {
 
 <style lang="less" scoped>
 @import '@/style/scrollbar.less';
+
 .console {
-  padding-bottom: 5px;
-  user-select: none;
+  min-height: calc(100% - 10px);
+  padding-bottom: 10px;
 }
+
 .empty-tip {
   text-align: center;
   color: var(--text-color);
   padding: 10px 0;
 }
+
 .message {
   color: var(--text-color);
   max-height: 200px;
   overflow: auto;
-  padding: 5px;
+  padding: 0 5px;
+  margin-top: 5px;
+
   .scrollbar();
+
+  &.log {
+    color: var(--text-color);
+  }
+
+  &.warn {
+    color: #f5a623;
+  }
+
+  &.error {
+    color: #f5222d;
+  }
+
+  &.info {
+    color: #1890ff;
+  }
 
   .status {
     padding: 0;
   }
-  .content {
-    cursor: pointer;
-  }
 
-  &-log {
-    color: var(--text-color);
-  }
-  &-warn {
-    color: #f5a623;
-  }
-  &-error {
-    color: #f5222d;
-  }
-  &-info {
-    color: #1890ff;
+  .handler {
+    padding: 2px;
   }
 }
 </style>

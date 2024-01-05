@@ -1,26 +1,45 @@
 import { defineStore } from 'pinia'
+import { uniqueId } from 'lodash-es'
+import { Message } from '@arco-design/web-vue'
 import {
   getItem,
   setItem,
   removeItem,
   runCodeInSandbox,
   runCodeInBrowser,
-  allDocs,
-  isElectron,
-  classof,
-  parseCommentBlock
+  isElectron
 } from '@/utils'
 import { IMessage } from '@/components/Console.vue'
-import { uniqueId, throttle } from 'lodash-es'
-import { Message } from '@arco-design/web-vue'
+import { useHistoryStore } from './useHistoryStore'
 
 export interface ICodeStoreState {
+  /**
+   * code id
+   */
   id: number
+  /**
+   * code content
+   */
   code: string
+  /**
+   * console messages
+   */
   messages: IMessage[]
+  /**
+   * code running environment
+   */
   env: 'node' | 'browser'
-  historys: { id: string; timeStamp: number; code: string; name?: string }[]
+  /**
+   * code running mode
+   */
   mode: 'ontime' | 'manual'
+  /**
+   * code readonly
+   */
+  readonly: boolean
+  /**
+   * code is running
+   */
   execState: boolean
 }
 
@@ -33,37 +52,40 @@ export const useCodeStore = defineStore('CodeSrore', {
       code: '',
       messages: [] as IMessage[],
       env: isElectron ? getItem('env') || 'node' : 'browser',
-      historys: [],
       mode: getItem('mode') || 'ontime',
+      readonly: getItem('readonly') || false,
       execState: false
     } as ICodeStoreState),
   getters: {
     codeWithId: (state) => `code/${state.id}`,
     currentEnv: (state) => (state.env === 'browser' ? '浏览器' : 'Node.js'),
-    currentMode: (state) => (state.mode === 'ontime' ? '即时执行' : '手动触发')
+    currentMode: (state) => (state.mode === 'ontime' ? '即时执行' : '手动触发'),
+    currentReadonly: (state) => (state.readonly ? '只读' : '可编辑')
   },
   actions: {
     init() {
       const lastCodeId = getItem('lastCodeId') || 0
       this.loadCode(lastCodeId)
-      this.loadHistorys()
+      useHistoryStore().loadHistorys()
     },
 
     newCode() {
       if (this.id !== 0) Message.success('成功创建新代码片段')
-      if (this.historys.length === 99)
-        return Message.error('创建失败 代码历史已达到上限 请删除部分代码历史后继续操作')
-      this.clearMessages()
       this.id = new Date().getTime()
       this.code = getItem('lastCodeId') ? '' : 'console.log("Hello, World!")'
       setItem(this.codeWithId, this.code)
       setItem('lastCodeId', this.id)
-      this.loadHistorys()
+      // 更新展示的历史记录数量
+      useHistoryStore().loadHistorys()
     },
 
     loadCode(id: number) {
       const code = getItem(`code/${id}`)
-      if (classof(code) === 'Null') return this.newCode()
+      if (code === null) {
+        this.newCode()
+        return
+      }
+
       this.id = id
       this.code = code
     },
@@ -79,7 +101,7 @@ export const useCodeStore = defineStore('CodeSrore', {
       message && this.messages.push(message)
     },
 
-    clearMessages() {
+    clearConsole() {
       this.messages = []
     },
 
@@ -94,38 +116,9 @@ export const useCodeStore = defineStore('CodeSrore', {
       this.mode === 'manual' ? setItem('mode', 'manual') : removeItem('mode')
     },
 
-    loadHistorys() {
-      const res = allDocs('code/')
-
-      if (!res || !res.length) return
-
-      // newest at first
-      res.sort((a: any, b: any) => parseInt(b._id.split('/')[1]) - parseInt(a._id.split('/')[1]))
-
-      // restrict historys length
-      const rm = res.splice(0, res.length - 99)
-      rm.forEach((item: any) => removeItem(item._id))
-
-      this.historys = res.map((item: any) => {
-        // clear escape character in item.data and remove `"` at the beginning and end
-        const plainCode = item.data
-          .replace(/\\n/g, '\n')
-          .replace(/\\r/g, '\r')
-          .replace(/\\t/g, '\t')
-          .slice(1)
-          .slice(0, -1)
-
-        const name =
-          parseCommentBlock(plainCode)?.name ||
-          (plainCode.startsWith('//') ? plainCode.split('\n')[0].slice(2).trim() : '')
-
-        return {
-          id: item._id,
-          timeStamp: parseInt(item._id.split('/')[1], 10),
-          code: item.data,
-          name
-        }
-      })
+    changeReadonly() {
+      this.readonly = !this.readonly
+      this.readonly ? setItem('readonly', true) : removeItem('readonly')
     },
 
     readHistory(timeStamp: number) {
@@ -133,56 +126,34 @@ export const useCodeStore = defineStore('CodeSrore', {
       setItem('lastCodeId', this.id)
     },
 
-    deleteHistory(timeStamp: number) {
-      const idx = this.historys.findIndex((h) => h.timeStamp === timeStamp)
-      this.historys.splice(idx, 1)
-      removeItem(`code/${timeStamp}`)
-      Message.success('删除成功')
+    execCode() {
+      if (!this.code) {
+        return
+      }
 
-      // 选中第一条历史记录 or 新建代码片段
-      this.historys.length ? this.readHistory(this.historys[0].timeStamp) : this.newCode()
-    },
+      const handleConsole = (stdout: any[], stderr: any[]) => {
+        const id = uniqueId()
+        const timeStamp = new Date().getTime()
 
-    emptyHistory() {
-      this.historys = this.historys.filter((item) => {
-        item.id === this.codeWithId
-        return item.id === this.codeWithId
+        if (stdout && stdout?.length)
+          this.pushMessage({
+            id,
+            timeStamp,
+            type: 'log',
+            content: stdout
+          })
+        if (stderr) this.pushMessage({ id, timeStamp, type: 'error', content: stderr })
+      }
+
+      this.env === 'browser'
+        ? runCodeInBrowser(this.code, handleConsole)
+        : runCodeInSandbox(this.code, handleConsole)
+
+      // side effect
+      this.execState = true
+      setTimeout(() => {
+        this.execState = false
       })
-      allDocs('code/').forEach((item: any) => item._id !== this.codeWithId && removeItem(item._id))
-      Message.success('清空历史记录成功')
-    },
-
-    execCode: throttle(
-      function (this: ICodeStore) {
-        // bind this to avoid type error
-        if (!this.code) return Message.warning('当前代码为空')
-
-        const handleConsole = (stdout: any[], stderr: any[]) => {
-          const id = uniqueId()
-          const timeStamp = new Date().getTime()
-
-          if (stdout && stdout?.length)
-            this.pushMessage({
-              id,
-              timeStamp,
-              type: 'log',
-              content: stdout
-            })
-          if (stderr) this.pushMessage({ id, timeStamp, type: 'error', content: stderr })
-        }
-
-        this.env === 'browser'
-          ? runCodeInBrowser(this.code, handleConsole)
-          : runCodeInSandbox(this.code, handleConsole)
-
-        // side effect
-        this.execState = true
-        setTimeout(() => {
-          this.execState = false
-        })
-      },
-      350,
-      { leading: true }
-    )
+    }
   }
 })

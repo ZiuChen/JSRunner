@@ -11,7 +11,7 @@
         <a-button v-else @click="openLink(btn.url)">{{ btn.text }}</a-button>
       </template>
     </div>
-    <div class="footer-tip">Copyright © 2019-present ZiuChen</div>
+    <div class="footer-tip">Copyright © 2024 ZiuChen</div>
     <BackButton />
   </div>
 </template>
@@ -25,8 +25,9 @@ const btns = [
   {
     text: '开源地址',
     url: 'https://github.com/ZiuChen/JSRunner',
-    badge: { text: 'Star' }
+    badge: { text: 'Star Me' }
   },
+  { text: '体验在线版', url: 'https://ziuchen.github.io/JSRunner/' },
   { text: '更新日志', url: 'https://ziuchen.gitee.io/project/JSRunner/log/' }
 ]
 

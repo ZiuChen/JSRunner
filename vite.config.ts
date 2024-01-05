@@ -18,7 +18,13 @@ export default defineConfig({
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.vue']
   },
   optimizeDeps: {
-    entries: ['monaco-editor']
+    entries: ['monaco-editor', '@arco-design/web-vue'],
+    needsInterop: [
+      'monaco-editor/esm/vs/editor/standalone/browser/accessibilityHelp/accessibilityHelp',
+      'monaco-editor/esm/vs/editor/contrib/documentSymbols/browser/documentSymbols',
+      'monaco-editor/esm/vs/editor/contrib/format/browser/formatActions, monaco-editor/esm/vs/editor/contrib/inPlaceReplace/browser/inPlaceReplace',
+      'monaco-editor/esm/vs/editor/standalone/browser/inspectTokens/inspectTokens'
+    ]
   },
   build: {
     rollupOptions: {

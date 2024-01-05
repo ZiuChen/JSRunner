@@ -22,9 +22,13 @@ export function usePageBack() {
       h(
         Button,
         {
-          class: 'back',
           onClick: back,
-          shape: 'circle'
+          shape: 'circle',
+          style: {
+            position: 'fixed !important',
+            top: '10px',
+            left: '10px'
+          }
         },
         () => h(IconLeft)
       )

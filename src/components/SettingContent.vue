@@ -1,11 +1,9 @@
 <template>
   <div class="setting-content">
-    <h3>
-      <span>{{ title }}</span>
-      <a-tooltip v-if="!!desc" :content="desc">
-        <icon-info-circle></icon-info-circle>
-      </a-tooltip>
-    </h3>
+    <h3>{{ title }}</h3>
+    <a-tooltip v-if="!!desc" :content="desc">
+      <icon-info-circle></icon-info-circle>
+    </a-tooltip>
     <slot></slot>
   </div>
 </template>
