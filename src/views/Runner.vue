@@ -90,6 +90,7 @@ function handleEditorAction(action: EditorAction) {
       editorRef.value?.editor?.trigger('', 'editor.action.quickCommand', null)
       break
     case 'listHistory':
+      history.loadHistorys()
       const list = history.historys.map((item) => ({
         type: 'item',
         id: item.timeStamp,
