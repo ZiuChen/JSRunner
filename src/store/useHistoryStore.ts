@@ -31,11 +31,6 @@ export const useHistoryStore = defineStore('history', {
       this.historys = res.map((item: any) => {
         // clear escape character in content and remove `"` at the beginning and end
         const plainCode = item.value
-          .replace(/\\n/g, '\n')
-          .replace(/\\r/g, '\r')
-          .replace(/\\t/g, '\t')
-          .slice(1)
-          .slice(0, -1)
 
         const name =
           parseCommentBlock(plainCode)?.name ||
