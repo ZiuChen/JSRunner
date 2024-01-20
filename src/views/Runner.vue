@@ -102,6 +102,9 @@ function handleEditorAction(action: EditorAction) {
       editorRef.value?.editor?.focus()
       editorRef.value?.editor?.trigger('', 'quickInput', {
         list,
+        options: {
+          activeItem: list[list.findIndex((item) => item.id === store.id)]
+        },
         callback: (selected?: (typeof list)[0]) => {
           if (selected) {
             useCodeStore().loadCode(selected.id)

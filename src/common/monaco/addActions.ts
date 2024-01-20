@@ -24,9 +24,9 @@ export function addActions(
     id: 'quickInput',
     label: 'Quick Input',
     contextMenuGroupId: 'buildin-action',
-    run: (editor, { list, callback }) => {
+    run: (editor, { list, callback, options }) => {
       editor.trigger('', quickInputCommand!, (quickInput: any) => {
-        quickInput.pick(list).then((selected?: any) => {
+        quickInput.pick(list, options).then((selected?: any) => {
           callback(selected)
         })
       })
