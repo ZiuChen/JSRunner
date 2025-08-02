@@ -1,0 +1,1 @@
+import{init_SuperJavaScript as e}from"./app-DUEBNJk7.js";e();
