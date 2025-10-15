@@ -1,1 +1,0 @@
-import{conf as e,init_javascript as t,language as n}from"./vendor-D5cattrk.js";t();export{e as conf,n as language};

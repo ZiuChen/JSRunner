@@ -1,1 +1,0 @@
-import{Buffer as e,electron as t,init_preload as n,require as r,vm as i}from"./app-DUEBNJk7.js";n();export{e as Buffer,t as electron,r as require,i as vm};

@@ -1,1 +1,12 @@
-const{readFileSync}=require("fs"),electron=require("electron"),{Buffer}=require("buffer"),vm=require("vm");window.preload={electron,Buffer,require,vm,readFileSync};
+const { readFileSync } = require('fs')
+const electron = require('electron')
+const { Buffer } = require('buffer')
+const vm = require('vm')
+
+window.preload = {
+  electron,
+  Buffer,
+  require,
+  vm,
+  readFileSync
+}

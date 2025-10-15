@@ -1,1 +1,0 @@
-import{Setting_default as e,init_Setting as t}from"./app-DUEBNJk7.js";t();export{e as default};
