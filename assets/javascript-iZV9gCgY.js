@@ -1,1 +1,0 @@
-import"./app-asGFNSdo.js";import{G as e,K as t}from"./vendor-DR5aSvHl.js";export{e as conf,t as language};
