@@ -1,0 +1,1 @@
+import{$ as e,Ut as t,ft as n,lt as r,nt as i}from"./arco-DanDg0-s.js";import{r as a}from"./vendor-C2zXIWWk.js";import{l as o}from"./index-CQIeIgtz.js";var s={class:`exec`},c=i({__name:`Exec`,setup(i){let c=o(`code/`+a().params.id);r(()=>{l()});function l(){console.log(`runCode`,c)}return(r,i)=>(n(),e(`div`,s,t(r.$route.params.id),1))}});export{c as default};

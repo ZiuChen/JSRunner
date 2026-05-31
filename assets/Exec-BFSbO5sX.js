@@ -1,1 +1,0 @@
-import{Ht as e,N as t,Qt as n,Rt as r,Tn as i,t as a,tn as o}from"./index-DrbU9MpN.js";var s={class:`exec`},c=e({__name:`Exec`,setup(e){let c=t(`code/`+a().params.id);n(()=>{l()});function l(){console.log(`runCode`,c)}return(e,t)=>(o(),r(`div`,s,i(e.$route.params.id),1))}});export{c as default};
